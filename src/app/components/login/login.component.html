@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 offset-sm-4 mt-5">
+            <h1 class="text-center text-light mt-5">S K I L E X</h1>
+            <form  [formGroup]="form" (submit)="login()">
+                <div class="form-group">
+                    <label class="text-light">Usuario</label>
+                    <input type="text" class="form-control form-control-sm text-light bg-dark border border-light"
+                    placeholder="Escribe tu usuario de acceso" formControlName="user">
+                    <div *ngIf="form.controls.user.status === 'INVALID' && !form.pristine">
+                        <p class="fs07 mt-1 ml-2 font-weight-bold text-danger"
+                        *ngIf="form.controls.user.errors.required && form.controls.user.pristine">
+                            El usuario es necesario
+                        </p>
+                        <p class="fs07 mt-1 ml-2 font-weight-bold text-danger"
+                        *ngIf="form.controls.user.errors.minlength && !form.controls.user.pristine">
+                            Mínimo {{ form.controls.user.errors.minlength.requiredLength }} caractéres, 
+                            solo escribiste {{ form.controls.user.errors.minlength.actualLength }}
+                        </p>
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <label class="text-light">Contraseña</label>
+                    <input type="password" class="form-control form-control-sm text-light bg-dark border border-light"
+                    placeholder="Ingresa tu contraseña" formControlName="password">
+                    <div *ngIf="form.controls.password.status === 'INVALID' && !form.pristine">
+                            <p class="fs07 mt-1 ml-2 font-weight-bold text-danger"
+                            *ngIf="form.controls.password.errors.required && form.controls.password.pristine">
+                                Escribe la contraseña
+                            </p>
+                            <p class="fs07 mt-1 ml-2 font-weight-bold text-danger"
+                            *ngIf="form.controls.password.errors.minlength && !form.controls.password.pristine">
+                                Mínimo {{ form.controls.password.errors.minlength.requiredLength }} caractéres, 
+                                solo escribiste {{ form.controls.password.errors.minlength.actualLength }}
+                            </p>
+                        </div>
+                </div>
+    
+                <div class="form-group">
+                    <button [disabled]='btnLoading' type="submit" class="btn btn-block btn-sm btn-outline-dark text-light">Ingresar</button>
+                    <div *ngIf="endPointError" class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Cerrar</span>
+                        </button>
+                        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<app-loader [loading]='loading'></app-loader>
