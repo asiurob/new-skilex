@@ -19,7 +19,13 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot({ preventDuplicates: true, maxOpened: 3, positionClass: 'toast-bottom-right' })
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      maxOpened: 3,
+      positionClass: 'toast-bottom-center',
+      enableHtml: true,
+      progressBar: true
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

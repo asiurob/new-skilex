@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-loader',
@@ -6,14 +7,19 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./loader.component.sass']
 })
 
-export class LoaderComponent implements OnInit {
-  @Input() loading: boolean;
-  public display: string;
+export class LoaderComponent implements OnInit, OnDestroy {
+  @Input() loading: Observable<boolean>;
+  public subscription: Subscription;
+  public display = false;
   constructor() { }
 
   ngOnInit() {
-    console.log( this.loading );
-    this.loading = false;
+    console.log('ENTRE');
+    this.subscription = this.loading.subscribe( ( data: boolean ) => this.display = data );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }
