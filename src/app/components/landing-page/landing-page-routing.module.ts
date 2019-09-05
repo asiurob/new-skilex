@@ -4,7 +4,15 @@ import { LandingPageComponent } from './landing-page.component';
 
 
 const routes: Routes = [
-  { path: '', component: LandingPageComponent }
+  {
+    path: '',
+    component: LandingPageComponent,
+    children: [
+      { path: 'employees', loadChildren: './employees/employees.module#EmployeesModule' },
+      { path: 'departments', loadChildren: './departments/departments.module#DepartmentsModule' },
+
+    ]
+   },
 ];
 
 @NgModule({

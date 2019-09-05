@@ -43,3 +43,8 @@ html, body {
     color: #fff;
     transition: all 0.3s;
 }
+
+.img100 {
+    width: auto;
+    height: 250px;
+}

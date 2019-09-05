@@ -14,6 +14,7 @@ import { LoaderComponent } from '../loader/loader.component';
     LoginRoutingModule,
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
+  exports: [ LoaderComponent ]
 })
 export class LoginModule { }

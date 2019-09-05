@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-sm-4">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control bg-dark text-light border-dark form-control-sm"
+        placeholder="Busca departamento">
+      <div class="input-group-append">
+        <span class="input-group-text bg-dark text-light border-dark input-group-sm"> <i class="fas fa-search"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-2 offset-sm-6">
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/departments/new']">Nuevo departamento</a>
+  </div>
+</div>
+
+<div class="row" *ngIf="data">
+  <div class="col-12">
+    <table class="table table-sm table-hover table-dark table-striped text-center fs08">
+      <thead class="fs10">
+        <tr>
+          <th>Nombre</th>
+          <th>Creado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let info of data">
+          <td>{{ info.name }}</td>
+          <td>Por Alberto Siurob - {{ info.addedDate | date }}</td>
+          <td>
+              <a class="btn btn-sm btn-outline-light mx-1" [routerLink]="['/departments/edit/' + info.normalizedToLink ]" >
+                <i class="fas fa-edit"></i>
+              </a>
+              <button class="btn btn-sm btn-outline-light mx-1" (click)="delete( info )">
+                <i class="fas fa-trash"></i>
+              </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

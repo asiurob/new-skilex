@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-sm-6">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control bg-dark text-light border-dark form-control-sm" placeholder="Busca un empleado">
+      <div class="input-group-append">
+        <span class="input-group-text bg-dark text-light border-dark input-group-sm"> <i class="fas fa-search"></i> </span>
+      </div>
+    </div>
+  </div>
+  <div class="mb-1 col-sm-2 offset-sm-1">
+    <a class="btn btn-sm btn-outline-dark btn-block" [routerLink]="['/departments']">Departamentos</a>
+  </div>
+
+  <div class="mb-1 col-sm-2 offset-sm-1">
+    <button class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/employees/new']">Nuevo empleado</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-3 mb-2" *ngFor="let item of [1,2,3,4,5]">
+    <div class="text-center text-light border border-secondary rounded p-2">
+      <img
+        src="https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2018/10/salinas.png?resize=1080%2C600&quality=80&ssl=1"
+        alt="Alberto Siurob" class="img-fluid rounded mb-2" style="width: 75%">
+      <h6>Alberto Siurob <br><small class="text-muted">Director de Tecnologías</small></h6>
+      <a href="mailto:asiurob@ziro.com.mx" class="text-decoration-none text-light fs08"><i class="fas fa-envelope"></i>
+        asiurob@ziro.com.mx</a><br>
+      <a href="tel:5583670777" class="text-decoration-none text-light fs08"><i class="fas fa-mobile-alt"></i>
+        5583670777</a>
+    </div>
+  </div>
+</div>

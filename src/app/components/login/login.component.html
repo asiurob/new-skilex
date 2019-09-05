@@ -38,17 +38,10 @@
                 </div>
     
                 <div class="form-group">
-                    <button [disabled]='btnLoading' type="submit" class="btn btn-block btn-sm btn-outline-dark text-light">Ingresar</button>
-                    <div *ngIf="endPointError" class="alert alert-primary alert-dismissible fade show" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            <span class="sr-only">Cerrar</span>
-                        </button>
-                        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                    </div>
+                    <button type="submit" class="btn btn-block btn-sm btn-outline-dark text-light">Ingresar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<app-loader [loading]='loading.asObservable()'></app-loader>
+<!--app-loader [loading]='loading.asObservable()'></app-loader-->

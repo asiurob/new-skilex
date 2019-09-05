@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     public sLogin: LoginService,
     private tostador: ToastrService,
     private sLs: LocalStorageService,
-    private router: Router) { }
+    private router: Router) { } 
 
   ngOnInit() {
     this.sLs.deleteData();
@@ -44,12 +44,12 @@ export class LoginComponent implements OnInit {
       .subscribe(
         ( res: any ) => {
           res.data[0].token = res.token;
+          res.data[0].id   = res.data[0]._id;
           this.sLs.setData( res.data[0] );
-          this.router.navigateByUrl('');
+          this.router.navigateByUrl('/');
         },
         ( err: any ) =>  this.tostador.error( err.error.message, '¡Error!' )
       ).add( () => this.loading.next( false ) );
     }
   }
-
 }

@@ -14,7 +14,6 @@ export class LoaderComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-    console.log('ENTRE');
     this.subscription = this.loading.subscribe( ( data: boolean ) => this.display = data );
   }
 
