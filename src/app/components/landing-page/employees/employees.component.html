@@ -1,9 +1,11 @@
 <div class="row">
   <div class="col-sm-6">
     <div class="input-group mb-3">
-      <input type="text" class="form-control bg-dark text-light border-dark form-control-sm" placeholder="Busca un empleado">
+      <input #i type="text" class="form-control bg-dark text-light border-dark form-control-sm"
+        placeholder="Busca un empleado" (keyup)="findEmployee( i.value )" (keydown)="clearTime()">
       <div class="input-group-append">
-        <span class="input-group-text bg-dark text-light border-dark input-group-sm"> <i class="fas fa-search"></i> </span>
+        <span class="input-group-text bg-dark text-light border-dark input-group-sm"> <i class="fas fa-search"></i>
+        </span>
       </div>
     </div>
   </div>
@@ -12,20 +14,59 @@
   </div>
 
   <div class="mb-1 col-sm-2 offset-sm-1">
-    <button class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/employees/new']">Nuevo empleado</button>
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/employees/new/' + current]">Nuevo empleado</a>
   </div>
 </div>
-<div class="row">
-  <div class="col-sm-3 mb-2" *ngFor="let item of [1,2,3,4,5]">
-    <div class="text-center text-light border border-secondary rounded p-2">
-      <img
-        src="https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2018/10/salinas.png?resize=1080%2C600&quality=80&ssl=1"
-        alt="Alberto Siurob" class="img-fluid rounded mb-2" style="width: 75%">
-      <h6>Alberto Siurob <br><small class="text-muted">Director de Tecnologías</small></h6>
-      <a href="mailto:asiurob@ziro.com.mx" class="text-decoration-none text-light fs08"><i class="fas fa-envelope"></i>
-        asiurob@ziro.com.mx</a><br>
-      <a href="tel:5583670777" class="text-decoration-none text-light fs08"><i class="fas fa-mobile-alt"></i>
-        5583670777</a>
+
+<div *ngIf="!loading && users">
+  <div *ngIf="users.length > 0">
+    <div class="row">
+      <div class="col-sm-3 mb-2" *ngFor="let user of users">
+        <div class="text-center text-light border-card rounded p-2"
+        [ngClass]="{'isActive': user.status == 'active', 'isInactive': user.status == 'inactive'}">
+          <a [routerLink]="['/employees/edit/' + user.normalizedToLink + '/' + current ]">
+            <img [src]="'http://localhost:9000/users/' + user.photo" alt="Alberto Siurob"
+              class="img-fluid rounded mb-2 portrait"></a>
+          <h6>{{ user.name }} {{ user.last_name }} <br><small class="text-muted">{{ user.role?.name }} de
+              {{ user.area?.name }}</small></h6>
+          <label class="text-primary fs09">{{ user.user_name }}</label><br>
+          <a [href]="'mailto:' + user.email" class="text-decoration-none text-light fs08"><i
+              class="fas fa-envelope"></i>
+            {{user.email}}</a><br>
+          <a [href]="'tel:' + user.phone" class="text-decoration-none text-light fs08"><i class="fas fa-mobile-alt"></i>
+            {{user.phone}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5" *ngIf="pages > 1">
+      <div class="col-12">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" *ngFor="let cell of cells">
+            <a class="page-link" [ngClass]="{'active-pagination': cell === current}"
+              style="background-color: #343a40; color: #f8f9fa;" [routerLink]="['/employees', cell ]">{{cell}}</a>
+          </li>
+        </ul>
+        <p class="text-center text-light">
+          Mostrando
+          <span class="font-weight-bold">{{ showing }}</span> de
+          <span class="font-weight-bold">{{count}}</span> resultados
+        </p>
+      </div>
     </div>
   </div>
+
+  <div *ngIf="users.length === 0">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-light text-center font-weight-bold border border-muted rounded p-5 mt-5">
+          <h3>No se encontraron empleados</h3>
+          <button class="text-center btn btn-block btn-outline-light btn-lg mt-3" [routerLink]="['/employees/1']">
+            ¡Aquí seguramente encuentras! También puedes crear uno nuevo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

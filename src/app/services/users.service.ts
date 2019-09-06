@@ -16,6 +16,23 @@ export class UsersService {
   ) { }
 
   public save( data: any ): Observable<any> {
-    return this.cHttp.post( `${ link }/users`, data );
+    return this.cHttp.put( `${ link }/users`, data );
+  }
+
+  public update( data: any, id: string ): Observable<any> {
+    return this.cHttp.post( `${ link }/users/${ id }`, data );
+  }
+
+  public fetch( skip: number, limit: number, user?: string ): Observable<any> {
+    user = user ? user : '';
+    return this.cHttp.get( `${ link }/users/${ skip }/${ limit }/${ user }` );
+  }
+
+  public resetPassword( id: string ): Observable<any> {
+    return this.cHttp.get( `${ link }/password/${ id }` );
+  }
+
+  public getBosses( role: number, dpto: string ): Observable<any> {
+    return this.cHttp.get( `${ link }/boss/${ role }/${ dpto }` );
   }
 }

@@ -1,4 +1,12 @@
 <div class="row">
+  <div class="col-2">
+    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/employees/' + current]">
+      <i class="fas fa-chevron-left"></i> Regresar
+    </a>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-12">
     <h4 class="text-center text-light">Nuevo empleado</h4>
   </div>
@@ -7,20 +15,20 @@
 <form [formGroup]="form" (submit)="save()">
   <div class="row">
     <div class="col-sm-3">
-        <h5 class="text-center text-muted">Vista de tarjeta previa</h5>
+      <h5 class="text-center text-muted">Vista previa de tarjeta</h5>
       <div class="text-center text-light border border-secondary rounded p-2">
         <img *ngIf="imgRender" [src]="imgRender" [alt]="form.value.name + ' ' + form.value.lastname"
-          class="img-fluid rounded mb-2" style="width: 75%">
+          class="img-fluid rounded mb-2 portrait">
         <h6>{{ form.value.name }} {{ form.value.lastname }}<br>
           <small *ngIf="rolLabel && dpLabel" class="text-muted">{{ rolLabel }} de {{ dpLabel }}</small>
         </h6>
         <label class="text-primary fs09">{{ form.value.username }}</label><br>
 
         <a *ngIf="form.value.email" [href]="'mailto:' + form.value.email" class="text-decoration-none text-light fs08">
-            <i class="fas fa-envelope"></i>
+          <i class="fas fa-envelope"></i>
           {{ form.value.email }}</a><br>
         <a *ngIf="form.value.phone" [href]="'tel:' + form.value.phone" class="text-decoration-none text-light fs08">
-          <i class="fas fa-mobile-alt" ></i>
+          <i class="fas fa-mobile-alt"></i>
           {{ form.value.phone }}</a>
       </div>
     </div>
@@ -82,7 +90,7 @@
           <div class="form-group">
             <label class="text-muted">Rol</label>
             <select #r class="form-control form-control-sm bg-dark text-light" formControlName="role"
-              (change)="roleLabel( r )">
+              (change)="roleLabel( r ); getBosses()">
               <option selected disabled value="0">Selecciona un rol</option>
               <option *ngFor="let rol of roles" [value]="rol._id + rol.hierarchy">{{ rol.name }}</option>
             </select>
@@ -92,7 +100,7 @@
           <div class="form-group">
             <label class="text-muted">Departamento</label>
             <select #d class="form-control form-control-sm bg-dark text-light" formControlName="area"
-              (change)="dptoLabel( d )">
+              (change)="dptoLabel( d ); getBosses()">
               <option selected disabled value="0">Selecciona un departamento</option>
               <option *ngFor="let dp of dptos" [value]="dp._id">{{ dp.name }}</option>
             </select>
@@ -103,6 +111,7 @@
             <label class="text-muted">Jefe inmediato</label>
             <select class="form-control form-control-sm bg-dark text-light" formControlName="boss">
               <option selected disabled value="0">Selecciona un usuario</option>
+              <option *ngFor="let boss of bosses" [value]="boss._id">{{ boss.name }} {{ boss.last_name }}</option>
             </select>
           </div>
         </div>

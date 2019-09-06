@@ -48,3 +48,28 @@ html, body {
     width: auto;
     height: 250px;
 }
+
+.portrait {
+    width: 75%;
+    min-height: 150px;
+    max-height: 150px;
+    height: 150px;
+}
+
+.active-pagination {
+    background-color: #fff !important;
+    color: #000 !important;
+    font-weight: bolder;
+}
+
+.border-card {
+    border: 1px solid #343a40;
+}
+
+.isActive {
+    border-bottom: 5px solid #28a745!important; 
+}
+
+.isInactive {
+    border-bottom: 5px solid #dc3545!important; 
+}

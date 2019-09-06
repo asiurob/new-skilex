@@ -1,4 +1,12 @@
 <div class="row">
+  <div class="col-3">
+    <a class="btn btn-block btn-outline-light btn-sm" [routerLink]="['/employees/1']">
+      <i class="fas fa-chevron-left"></i> Regresar a empleados
+    </a>
+  </div>
+</div>
+
+<div class="row mt-5">
   <div class="col-sm-4">
     <div class="input-group mb-3">
       <input type="text" class="form-control bg-dark text-light border-dark form-control-sm"
@@ -30,17 +38,15 @@
           <td>{{ info.name }}</td>
           <td>Por Alberto Siurob - {{ info.addedDate | date }}</td>
           <td>
-              <a class="btn btn-sm btn-outline-light mx-1" [routerLink]="['/departments/edit/' + info.normalizedToLink ]" >
-                <i class="fas fa-edit"></i>
-              </a>
-              <button class="btn btn-sm btn-outline-light mx-1" (click)="delete( info )">
-                <i class="fas fa-trash"></i>
-              </button>
+            <a class="btn btn-sm btn-outline-light mx-1" [routerLink]="['/departments/edit/' + info.normalizedToLink ]">
+              <i class="fas fa-edit"></i>
+            </a>
+            <button class="btn btn-sm btn-outline-light mx-1" (click)="delete( info )">
+              <i class="fas fa-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-
-
