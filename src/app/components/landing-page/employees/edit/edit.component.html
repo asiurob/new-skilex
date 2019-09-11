@@ -94,7 +94,7 @@
               <label class="text-muted">Rol</label>
               <select #r class="form-control form-control-sm bg-dark text-light" formControlName="role"
                 (change)="roleLabel( r )">
-                <option *ngFor="let rol of roles" [ngValue]="rol._id">{{ rol.name }}</option>
+                <option *ngFor="let rol of roles" [ngValue]="rol._id + rol.hierarchy">{{ rol.name }}</option>
               </select>
             </div>
           </div>
@@ -111,13 +111,14 @@
             <div class="form-group">
               <label class="text-muted">Jefe inmediato</label>
               <select class="form-control form-control-sm bg-dark text-light" formControlName="boss">
+                <option *ngFor="let boss of bosses" [value]="boss._id">{{ boss.name }} {{ boss.last_name }}</option>
               </select>
             </div>
           </div>
         </div>
 
         <div class="row mt-2">
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <label class="text-muted">Foto</label>
             <input #i type="file" formControlName="file" class="form-control form-control-sm bg-dark text-light"
               (change)="renderImage( i.files[0] )">
@@ -129,10 +130,29 @@
               <option [ngValue]="'inactive'">Inactivo</option>
             </select>
           </div>
-          <div class="col-sm-3">
-            <label class="text-muted">Restablecer password</label>
-            <a class="btn btn-block btn-outline-danger btn-sm text-danger" (click)="resetPassword()">Reiniciar</a>
-          </div>
+
+          <ng-container *ngIf="permission.allowed && permission.myProfile then both else change"></ng-container>
+
+
+          <ng-template #both>
+            <div class="col-sm-6">
+              <label class="text-muted">Cambiar password</label>
+              <input type="password" class="form-control form-control-sm bg-dark text-light" formControlName="password"
+                placeholder="Nueva contraseña">
+            </div>
+            <div class="col-sm-3">
+              <label class="text-muted">Restablecer password</label>
+              <a class="btn btn-block btn-outline-danger btn-sm text-danger" (click)="resetPassword()">Reiniciar</a>
+            </div>
+          </ng-template>
+
+          <ng-template #change>
+            <div class="col-sm-6">
+              <label class="text-muted">Cambiar password</label>
+              <input type="password" class="form-control form-control-sm bg-dark text-light" formControlName="password"
+                placeholder="Nueva contraseña">
+            </div>
+          </ng-template>
 
 
         </div>
@@ -144,5 +164,5 @@
         </div>
       </div>
     </div>
-  </form> 
+  </form>
 </div>

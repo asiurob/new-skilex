@@ -76,8 +76,12 @@
 
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <h6 class="text-light text-center">Alberto Siurob
-        <br><small class="text-muted">Chief Information Officer</small>
+      
+      <h6 class="text-light text-center">
+          <a  class="text-light text-center text-decoration-none" 
+          [routerLink]="[ '/employees/edit/' + user.normalizedToLink + '/1' ]">
+            {{ user.name }} {{ user.last_name }}</a>
+        <br><small class="text-muted">{{ user.role }} de {{ user.area }}</small>
         <br><small class="text-danger font-weight-bold">
           <span class="badge badge-danger fs08">
             <a [routerLink]="['/login']" class="text-decoration-none text-light">Salir</a>

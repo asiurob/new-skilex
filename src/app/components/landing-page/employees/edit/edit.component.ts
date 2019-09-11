@@ -24,6 +24,8 @@ export class EditComponent implements OnInit {
   public file: any;
   public user: any;
   public current: number;
+  public bosses: Array<any>;
+  public permission = { myProfile: false, allowed: false };
 
   constructor(
     private cRolService: RolesService,
@@ -46,7 +48,7 @@ export class EditComponent implements OnInit {
       .subscribe(
         ( res: any ) => this.user = res.data[0],
         ( err: any ) => this.tostador.error( err.error, '¡Error!' )
-      ).add( () => { this.createForm(); this.fetchRoles(); this.fetchDptos(); } );
+      ).add( () => { this.createForm(); this.fetchRoles(); } );
     }
 
   }
@@ -56,7 +58,7 @@ export class EditComponent implements OnInit {
     .subscribe(
       ( res: any ) => this.roles = res.data,
       ( err: any ) => this.tostador.error( err.error, '¡Error!' )
-    ).add( () => {  } );
+    ).add( () => {  this.fetchDptos(); } );
   }
 
   fetchDptos() {
@@ -64,14 +66,24 @@ export class EditComponent implements OnInit {
     .subscribe(
       ( res: any ) => this.dptos = res.data,
       ( err: any ) => this.tostador.error( err.error, '¡Error!' )
-    ).add( () => {  } );
+    ).add( () => { this.fetchBosses(); } );
   }
 
   fetchBosses() {
-    
+    if ( this.form.controls.role.value && this.form.controls.area.value ) {
+      const role = Number( this.form.controls.role.value.slice( -1 ) );
+      if ( !isNaN( role ) ) {
+        this.cUserService.getBosses( role, this.form.controls.area.value )
+        .subscribe(
+          ( res: any ) => this.bosses = res.data,
+          ( err: any ) => this.tostador.error( err.error, '¡Error!' )
+        ).add( () => {  } );
+      }
+    }
   }
 
   createForm() {
+    const hierarchy = this.user.role._id + this.user.role.hierarchy;
     this.form = new FormGroup({
       name:     new FormControl( this.user.name,      [ Validators.required ]),
       lastname: new FormControl( this.user.last_name, [ Validators.required ]),
@@ -79,27 +91,46 @@ export class EditComponent implements OnInit {
       email:    new FormControl( this.user.email,     [ Validators.required, Validators.email ]),
       username: new FormControl( this.user.user_name, [ Validators.required]),
       phone:    new FormControl( this.user.phone,     [ Validators.required, Validators.pattern('[0-9]{10}')]),
-      role:     new FormControl( this.user.role._id,  [ Validators.required]),
+      role:     new FormControl( hierarchy,  [ Validators.required]),
       area:     new FormControl( this.user.area._id,  [ Validators.required]),
       status:   new FormControl( this.user.status ),
       boss:     new FormControl( this.user.boss ),
       file:     new FormControl(),
+      password: new FormControl(),
     });
+
+    let allowed     = Number( this.cLs.getIndex('hierarchy') ) < 3;
+    allowed         = !allowed;
+    const myProfile = this.user._id === this.cLs.getIndex('id');
+
+    this.permission.allowed   = allowed;
+    this.permission.myProfile = myProfile;
+
+    console.log( this.permission );
+
+    if ( !allowed ) {
+      this.form.controls.email.disable({ onlySelf: true });
+      this.form.controls.username.disable({ onlySelf: true });
+      this.form.controls.role.disable({ onlySelf: true });
+      this.form.controls.area.disable({ onlySelf: true });
+      this.form.controls.status.disable({ onlySelf: true });
+      this.form.controls.boss.disable({ onlySelf: true });
+    }
   }
 
   save() {
     if ( this.form.status === 'VALID' ) {
       let data = new FormData();
-      data.append('name', this.form.value.name );
-      data.append('lastname', this.form.value.lastname );
-      data.append('username', this.form.value.username );
-      data.append('email', this.form.value.email );
-      data.append('gender', this.form.value.gender );
-      data.append('role', this.form.value.role );
-      data.append('area', this.form.value.area );
-      data.append('boss', this.form.value.boss );
-      data.append('phone', this.form.value.phone );
-      data.append('active', this.form.value.status );
+      data.append('name', this.form.controls.name.value );
+      data.append('lastname', this.form.controls.lastname.value );
+      data.append('username', this.form.controls.username.value );
+      data.append('email', this.form.controls.email.value );
+      data.append('gender', this.form.controls.gender.value );
+      data.append('role', this.form.controls.role.value );
+      data.append('area', this.form.controls.area.value );
+      data.append('boss', this.form.controls.boss.value );
+      data.append('phone', this.form.controls.phone.value );
+      data.append('active', this.form.controls.status.value );
       data.append('user', this.cLs.getIndex('id') );
       if ( this.file ) {
         data.append('image', this.file, 'image' );
@@ -128,7 +159,7 @@ export class EditComponent implements OnInit {
 
   resetPassword() {
     this.cUserService.resetPassword( this.user._id )
-    .subscribe( 
+    .subscribe(
       () => this.tostador.success('Se reinició la contaseña', '¡Correcto!'),
       ( err: any ) => this.tostador.error( err.message, '¡Error!')
      ).add( () => {} );

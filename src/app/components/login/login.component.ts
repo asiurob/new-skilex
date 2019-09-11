@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { Router } from '@angular/router';
+import { Employee } from '../landing-page/employees/employees.interface';
 
 
 @Component({
@@ -43,9 +44,21 @@ export class LoginComponent implements OnInit {
       this.sLogin.getLogin( user )
       .subscribe(
         ( res: any ) => {
-          res.data[0].token = res.token;
-          res.data[0].id   = res.data[0]._id;
-          this.sLs.setData( res.data[0] );
+          const employee: Employee = {
+            name: res.data[0].name,
+            last_name: res.data[0].last_name,
+            token: res.token,
+            id: res.data[0]._id,
+            photo: res.data[0].photo,
+            role: res.data[0].role.name,
+            area: res.data[0].area.name,
+            normalizedToLink: res.data[0].normalizedToLink,
+            hierarchy: res.data[0].role.hierarchy
+          };
+
+          console.log( employee );
+
+          this.sLs.setData( employee );
           this.router.navigateByUrl('/');
         },
         ( err: any ) =>  this.tostador.error( err.error.message, '¡Error!' )

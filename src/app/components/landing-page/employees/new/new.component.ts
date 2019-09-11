@@ -119,7 +119,6 @@ export class NewComponent implements OnInit {
           ( err: any ) => this.tostador.error( err.error, '¡Error!' )
         ).add( () => {  } );
       }
-
     }
   }
 

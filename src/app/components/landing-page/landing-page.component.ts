@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { Employee } from './employees/employees.interface';
 
 @Component({
   selector: 'app-landing-page',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./landing-page.component.sass']
 })
 export class LandingPageComponent implements OnInit {
-
-  constructor() { }
+  public user: Employee;
+  constructor(
+    private cLs: LocalStorageService
+  ) { }
 
   ngOnInit() {
+    this.user = this.cLs.getData();
   }
 
 }

@@ -12,11 +12,13 @@ export class LocalStorageService {
     const user: Employee = {
       name: localStorage.getItem('name'),
       id: localStorage.getItem('id'),
-      lastName: localStorage.getItem('lastName'),
+      last_name: localStorage.getItem('last_name'),
       area: localStorage.getItem('area'),
       role: localStorage.getItem('role'),
       token: localStorage.getItem('token'),
-      photo: localStorage.getItem('photo')
+      photo: localStorage.getItem('photo'),
+      normalizedToLink: localStorage.getItem('normalizedToLink'),
+      hierarchy: localStorage.getItem('hierarchy')
     };
     return user;
   }
@@ -25,20 +27,24 @@ export class LocalStorageService {
     localStorage.setItem('area', user.area );
     localStorage.setItem('role', user.role );
     localStorage.setItem('name', user.name );
-    localStorage.setItem('lastName', user.lastName );
+    localStorage.setItem('last_name', user.last_name );
     localStorage.setItem('token', user.token );
     localStorage.setItem('id', user.id );
     localStorage.setItem('photo', user.photo);
+    localStorage.setItem('normalizedToLink', user.normalizedToLink);
+    localStorage.setItem('hierarchy', user.hierarchy);
   }
 
   public deleteData(): void {
     localStorage.removeItem('area');
     localStorage.removeItem('role');
     localStorage.removeItem('name');
-    localStorage.removeItem('lastName');
+    localStorage.removeItem('last_name');
     localStorage.removeItem('token');
     localStorage.removeItem('id');
     localStorage.removeItem('photo');
+    localStorage.removeItem('normalizedToLink');
+    localStorage.removeItem('hierarchy');
   }
 
   public getToken(): string {
