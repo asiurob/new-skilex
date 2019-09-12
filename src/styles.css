@@ -73,3 +73,7 @@ html, body {
 .isInactive {
     border-bottom: 5px solid #dc3545!important; 
 }
+
+.pointer {
+    cursor: pointer;
+}

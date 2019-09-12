@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-2">
+    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/glass-models']">
+      <i class="fas fa-chevron-left"></i> Regresar
+    </a>
+  </div>
+</div>
+<div class="row" *ngIf="model">
+  <div class="col-6 offset-3">
+    <h5 class="text-center text-light">Editando {{ model.name }}</h5>
+    <input #f type="text" [value]="model.name" class="form-control form-control-sm" placeholder="Nombre del modelo">
+    <select [(ngModel)]="selectedOption" class="form-control form-control-sm my-2" *ngIf="brands.length > 0">
+      <option selected disabled>Selecciona una marca</option>
+      <option *ngFor="let brand of brands" [selected]=" brand._id == model.brand._id ? 'selected' : '' "
+       [value]="brand._id">{{ brand.name }}</option>
+    </select>
+    <a class="fs07 text-light text-decoration-none" [routerLink]="[ '/glass-brands']">¿No encuentras la marca? Busca o crea una aquí</a>
+    <button class="btn btn-outline-light btn-block btn-sm mt-3" (click)="save( f.value )">Guardar</button>
+  </div>
+</div>

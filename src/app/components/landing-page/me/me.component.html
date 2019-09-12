@@ -134,7 +134,7 @@
                   <div class="card-body">
                     <ul *ngIf="user.modification.length > 0" class="list-group">
                       <li class="list-group-item fs07 bg-dark text-light"
-                        *ngFor="let mod of user.modification.reverse()">
+                        *ngFor="let mod of pagComments[ indexComments ]">
                         El
                         <span class="text-primary">{{ mod.date | date:'medium' }} - {{ mod.user.name }}
                           {{ mod.user.last_name }}</span>
@@ -147,6 +147,16 @@
                         </ul>
                       </li>
                     </ul>
+                    <div *ngIf="user.modification.length > 0">
+                      <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" 
+                      (click)="lessComments()">
+                        <i class="fas fa-chevron-left"></i>
+                      </a>
+                      <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" 
+                      (click)="plusComments()">
+                        <i class="fas fa-chevron-right"></i>
+                      </a>
+                    </div>
                     <label *ngIf="user.modification.length === 0" class="text-center text-light">Aún no hay
                       modificaciones</label>
                   </div>

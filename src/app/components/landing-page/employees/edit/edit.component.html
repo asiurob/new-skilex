@@ -154,18 +154,30 @@
                 <div id="collapseOne" class="collapse" data-parent="#accordion">
                   <div class="card-body">
                     <ul *ngIf="user.modification.length > 0" class="list-group">
-                      <li class="list-group-item fs07 bg-dark text-light" *ngFor="let mod of user.modification.reverse()">
-                        El 
-                        <span class="text-primary">{{ mod.date | date:'medium' }} - {{ mod.user.name }} {{ mod.user.last_name }}</span> 
+                      <li class="list-group-item fs07 bg-dark text-light"
+                        *ngFor="let mod of pagComments[ indexComments ]">
+                        El
+                        <span class="text-primary">{{ mod.date | date:'medium' }} - {{ mod.user.name }}
+                          {{ mod.user.last_name }}</span>
                         modificó:
                         <ul *ngFor="let up of mod.updated" class="list-unstyled">
                           <li class="ml-2">
-                            {{ up.field }} de <span class="font-weight-bolder fs08">{{ up.from }}</span> por <span class="font-weight-bolder fs08">{{ up.to }}</span>.
+                            {{ up.field }} de <span class="font-weight-bolder fs08">{{ up.from }}</span> por <span
+                              class="font-weight-bolder fs08">{{ up.to }}</span>.
                           </li>
                         </ul>
                       </li>
                     </ul>
-                    <label *ngIf="user.modification.length === 0" class="text-center text-light">Aún no hay modificaciones</label>
+                    <div *ngIf="user.modification.length > 0">
+                      <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" (click)="lessComments()">
+                        <i class="fas fa-chevron-left"></i>
+                      </a>
+                      <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" (click)="plusComments()">
+                        <i class="fas fa-chevron-right"></i>
+                      </a>
+                    </div>
+                    <label *ngIf="user.modification.length === 0" class="text-center text-light">Aún no hay
+                      modificaciones</label>
                   </div>
                 </div>
               </div>

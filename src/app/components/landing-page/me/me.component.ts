@@ -19,6 +19,8 @@ export class MeComponent implements OnInit {
   public file: any;
   public user: any;
   public current: number;
+  public pagComments: Array<any> = [];
+  public indexComments: number;
 
   constructor(
     private tostador: ToastrService,
@@ -30,11 +32,20 @@ export class MeComponent implements OnInit {
 
   ngOnInit() {
     const name = this.cLs.getIndex('normalizedToLink');
+    this.indexComments = 0;
     if ( name ) {
 
       this.cUserService.fetch( 0, 1, name )
       .subscribe(
-        ( res: any ) => this.user = res.data[0],
+        ( res: any ) => {
+          this.user = res.data[0];
+          this.user.modification = this.user.modification.reverse();
+          let x = 0;
+          for ( let i = 0; i < this.user.modification.length; i += 3 ) {
+            this.pagComments[ x ] = this.user.modification.slice( i, (3 + i ) );
+            x++;
+          }
+        },
         ( err: any ) => this.tostador.error( err.error, '¡Error!' )
       ).add( () =>  this.createForm() );
     }
@@ -107,6 +118,16 @@ export class MeComponent implements OnInit {
   renderImage( file: any ) {
     this.cIHandler.handler( file )
     .then( (res) => {this.imgRender = res, this.file = file; }, (err) => console.log( err ) );
+  }
+
+  plusComments() {
+    this.indexComments = (this.indexComments + 1) > ( this.pagComments.length - 1 )
+    ? (this.pagComments.length - 1)
+    : this.indexComments + 1;
+  }
+
+  lessComments() {
+    this.indexComments = (this.indexComments - 1) < 0 ? 0 : this.indexComments - 1;
   }
 
 }

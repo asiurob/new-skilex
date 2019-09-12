@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-3">
+    <a class="btn btn-block btn-outline-light btn-sm" [routerLink]="['/glasses']">
+      <i class="fas fa-chevron-left"></i> Regresar a armazones
+    </a>
+  </div>
+</div>
+
+<div class="row my-3">
+  <div class="col-sm-4">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control bg-dark text-light border-dark form-control-sm" placeholder="Buscar modelo">
+      <div class="input-group-append">
+        <span class="input-group-text bg-dark text-light border-dark input-group-sm"> <i class="fas fa-search"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-2 offset-sm-6">
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-models/new']">Nuevo modelo</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <table class="table table-sm table-hover table-dark table-striped text-center fs08">
+      <thead class="fs10">
+        <tr>
+          <th>Nombre</th>
+          <th>Marca</th>
+          <th>Creado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let model of models">
+          <td>{{ model.name }}</td>
+          <td>{{ model.brand.name }}</td>
+          <td>Por {{ model.addedBy.name }} {{ model.addedBy.last_name }}
+            - {{ model.addedDate | date:'medium' }}
+          </td>
+          <td>
+            <a class="btn btn-sm btn-outline-light mx-1"
+              [routerLink]="['/glass-models/edit/' + model.normalizedToLink ]">
+              <i class="fas fa-edit"></i>
+            </a>
+            <button class="btn btn-sm btn-outline-light mx-1" (click)="delete( model )">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+
+      </tbody>
+    </table>
+  </div>
+</div>

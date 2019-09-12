@@ -25,6 +25,8 @@ export class EditComponent implements OnInit {
   public user: any;
   public current: number;
   public bosses: Array<any>;
+  public pagComments: Array<any> = [];
+  public indexComments: number;
 
   constructor(
     private cRolService: RolesService,
@@ -38,6 +40,7 @@ export class EditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.indexComments = 0;
     const name = this.route.snapshot.params.name;
     this.current = Number( this.route.snapshot.params.current );
 
@@ -45,7 +48,15 @@ export class EditComponent implements OnInit {
 
       this.cUserService.fetch( 0, 1, name )
       .subscribe(
-        ( res: any ) => this.user = res.data[0],
+        ( res: any ) => {
+          this.user = res.data[0];
+          this.user.modification = this.user.modification.reverse();
+          let x = 0;
+          for ( let i = 0; i < this.user.modification.length; i += 3 ) {
+            this.pagComments[ x ] = this.user.modification.slice( i, (3 + i ) );
+            x++;
+          }
+        },
         ( err: any ) => this.tostador.error( err.error, '¡Error!' )
       ).add( () => {  this.fetchRoles(); } );
     }
@@ -155,6 +166,16 @@ export class EditComponent implements OnInit {
       () => this.tostador.success('Se reinició la contaseña', '¡Correcto!'),
       ( err: any ) => this.tostador.error( err.message, '¡Error!')
      ).add( () => {} );
+  }
+
+  plusComments() {
+    this.indexComments = (this.indexComments + 1) > ( this.pagComments.length - 1 )
+    ? (this.pagComments.length - 1)
+    : this.indexComments + 1;
+  }
+
+  lessComments() {
+    this.indexComments = (this.indexComments - 1) < 0 ? 0 : this.indexComments - 1;
   }
 
 }

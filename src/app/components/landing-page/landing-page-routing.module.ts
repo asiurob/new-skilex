@@ -11,6 +11,9 @@ const routes: Routes = [
       { path: 'employees', loadChildren: './employees/employees.module#EmployeesModule' },
       { path: 'departments', loadChildren: './departments/departments.module#DepartmentsModule' },
       { path: 'me', loadChildren: './me/me.module#MeModule' },
+      { path: 'glasses', loadChildren: './glasses/glasses.module#GlassesModule' },
+      { path: 'glass-brands', loadChildren: './brands/brands.module#BrandsModule' },
+      { path: 'glass-models', loadChildren: './bmodels/models.module#ModelsModule' },
 
     ]
    },

@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-2">
+    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/glass-brands']">
+      <i class="fas fa-chevron-left"></i> Regresar
+    </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-6 offset-3">
+    <h5 class="text-center text-light">Nueva marca</h5>
+    <input #f type="text" class="form-control form-control-sm" placeholder="Nombre de la marca">
+    <button class="btn btn-outline-light btn-block btn-sm mt-3" (click)="save( f.value )">Guardar</button>
+  </div>
+</div>
