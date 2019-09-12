@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-2">
-    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/employees/' + current ]">
+    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/']">
       <i class="fas fa-chevron-left"></i> Regresar
     </a>
   </div>
@@ -10,35 +10,29 @@
 
   <div class="row">
     <div class="col-12">
-      <h4 class="text-center text-light">Editando a {{ user.name }} {{ user.last_name }}</h4>
+      <h4 class="text-center text-light">Mi información</h4>
     </div>
   </div>
 
   <form [formGroup]="form" (submit)="save()">
     <div class="row">
       <div class="col-sm-3">
-        <div class="row">
-          <div class="col-12">
-            <h5 class="text-center text-muted">Vista previa de tarjeta</h5>
-            <div class="text-center text-light border-card rounded p-2"
-              [ngClass]="{'isActive': form.value.status == 'active', 'isInactive': form.value.status == 'inactive'}">
-              <img [src]="imgRender || 'http://localhost:9000/users/' + user.photo"
-                [alt]="form.value.name + ' ' + form.value.lastname" class="img-fluid rounded mb-2 portrait">
-              <h6>{{ form.value.name }} {{ form.value.lastname }}<br>
-                <small class="text-muted">{{ rolLabel || user.role.name }} de {{ dpLabel || user.area.name }}</small>
-              </h6>
-              <label class="text-primary fs09">{{ form.value.username || user.user_name }}</label><br>
+        <h5 class="text-center text-muted">Vista previa de tarjeta</h5>
+        <div class="text-center text-light border-card rounded p-2"
+          [ngClass]="{'isActive': form.value.status == 'active', 'isInactive': form.value.status == 'inactive'}">
+          <img [src]="imgRender || 'http://localhost:9000/users/' + user.photo"
+            [alt]="form.value.name + ' ' + form.value.lastname" class="img-fluid rounded mb-2 portrait">
+          <h6>{{ form.value.name }} {{ form.value.lastname }}<br>
+            <small class="text-muted">{{ user.role.name }} de {{ user.area.name }}</small>
+          </h6>
+          <label class="text-primary fs09">{{ form.value.username || user.user_name }}</label><br>
 
-              <a *ngIf="form.value.email" [href]="'mailto:' + form.value.email"
-                class="text-decoration-none text-light fs08">
-                <i class="fas fa-envelope"></i>
-                {{ form.value.email }}</a><br>
-              <a *ngIf="form.value.phone" [href]="'tel:' + form.value.phone"
-                class="text-decoration-none text-light fs08">
-                <i class="fas fa-mobile-alt"></i>
-                {{ form.value.phone }}</a>
-            </div>
-          </div>
+          <a [href]="'mailto:' + user.email" class="text-decoration-none text-light fs08">
+            <i class="fas fa-envelope"></i>
+            {{ user.email }}</a><br>
+          <a [href]="'tel:' + user.phone" class="text-decoration-none text-light fs08">
+            <i class="fas fa-mobile-alt"></i>
+            {{ user.phone }}</a>
         </div>
       </div>
       <div class="col-sm-9">
@@ -97,27 +91,19 @@
           <div class="col-sm-4">
             <div class="form-group">
               <label class="text-muted">Rol</label>
-              <select #r class="form-control form-control-sm bg-dark text-light" formControlName="role"
-                (change)="roleLabel( r )">
-                <option *ngFor="let rol of roles" [ngValue]="rol._id + rol.hierarchy">{{ rol.name }}</option>
-              </select>
+              <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="role">
             </div>
           </div>
           <div class="col-sm-4">
             <div class="form-group">
               <label class="text-muted">Departamento</label>
-              <select #d class="form-control form-control-sm bg-dark text-light" formControlName="area"
-                (change)="dptoLabel( d )">
-                <option *ngFor="let dp of dptos" [ngValue]="dp._id">{{ dp.name }}</option>
-              </select>
+              <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="area">
             </div>
           </div>
           <div class="col-sm-4">
             <div class="form-group">
               <label class="text-muted">Jefe inmediato</label>
-              <select class="form-control form-control-sm bg-dark text-light" formControlName="boss">
-                <option *ngFor="let boss of bosses" [value]="boss._id">{{ boss.name }} {{ boss.last_name }}</option>
-              </select>
+              <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="boss">
             </div>
           </div>
         </div>
@@ -128,20 +114,13 @@
             <input #i type="file" formControlName="file" class="form-control form-control-sm bg-dark text-light"
               (change)="renderImage( i.files[0] )">
           </div>
-          <div class="col-sm-3">
-            <label class="text-muted">Estado</label>
-            <select class="form-control form-control-sm bg-dark text-light" formControlName="status">
-              <option [ngValue]="'active'">Activo</option>
-              <option [ngValue]="'inactive'">Inactivo</option>
-            </select>
+          <div class="col-sm-6">
+            <label class="text-muted">Cambiar password</label>
+            <input type="password" class="form-control form-control-sm bg-dark text-light" formControlName="password"
+              placeholder="Nueva contraseña">
           </div>
-          <div class="col-sm-3">
-            <label class="text-muted">Restablecer password</label>
-            <a class="btn btn-block btn-outline-danger btn-sm text-danger" (click)="resetPassword()">Reiniciar</a>
-          </div>
-
-
         </div>
+
         <div class="row mt-3">
           <div class="col-10">
             <div id="accordion">
@@ -154,18 +133,22 @@
                 <div id="collapseOne" class="collapse" data-parent="#accordion">
                   <div class="card-body">
                     <ul *ngIf="user.modification.length > 0" class="list-group">
-                      <li class="list-group-item fs07 bg-dark text-light" *ngFor="let mod of user.modification.reverse()">
-                        El 
-                        <span class="text-primary">{{ mod.date | date:'medium' }} - {{ mod.user.name }} {{ mod.user.last_name }}</span> 
+                      <li class="list-group-item fs07 bg-dark text-light"
+                        *ngFor="let mod of user.modification.reverse()">
+                        El
+                        <span class="text-primary">{{ mod.date | date:'medium' }} - {{ mod.user.name }}
+                          {{ mod.user.last_name }}</span>
                         modificó:
                         <ul *ngFor="let up of mod.updated" class="list-unstyled">
                           <li class="ml-2">
-                            {{ up.field }} de <span class="font-weight-bolder fs08">{{ up.from }}</span> por <span class="font-weight-bolder fs08">{{ up.to }}</span>.
+                            {{ up.field }} de <span class="font-weight-bolder fs08">{{ up.from }}</span> por <span
+                              class="font-weight-bolder fs08">{{ up.to }}</span>.
                           </li>
                         </ul>
                       </li>
                     </ul>
-                    <label *ngIf="user.modification.length === 0" class="text-center text-light">Aún no hay modificaciones</label>
+                    <label *ngIf="user.modification.length === 0" class="text-center text-light">Aún no hay
+                      modificaciones</label>
                   </div>
                 </div>
               </div>

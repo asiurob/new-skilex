@@ -56,8 +56,6 @@ export class LoginComponent implements OnInit {
             hierarchy: res.data[0].role.hierarchy
           };
 
-          console.log( employee );
-
           this.sLs.setData( employee );
           this.router.navigateByUrl('/');
         },

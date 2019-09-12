@@ -29,7 +29,7 @@ export class UsersService {
   }
 
   public resetPassword( id: string ): Observable<any> {
-    return this.cHttp.get( `${ link }/password/${ id }` );
+    return this.cHttp.post( `${ link }/password/${ id }`, { user: this.cUser.getIndex( 'id' ) } );
   }
 
   public getBosses( role: number, dpto: string ): Observable<any> {

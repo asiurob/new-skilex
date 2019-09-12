@@ -10,6 +10,7 @@ const routes: Routes = [
     children: [
       { path: 'employees', loadChildren: './employees/employees.module#EmployeesModule' },
       { path: 'departments', loadChildren: './departments/departments.module#DepartmentsModule' },
+      { path: 'me', loadChildren: './me/me.module#MeModule' },
 
     ]
    },

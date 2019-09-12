@@ -25,7 +25,6 @@ export class EditComponent implements OnInit {
   public user: any;
   public current: number;
   public bosses: Array<any>;
-  public permission = { myProfile: false, allowed: false };
 
   constructor(
     private cRolService: RolesService,
@@ -48,7 +47,7 @@ export class EditComponent implements OnInit {
       .subscribe(
         ( res: any ) => this.user = res.data[0],
         ( err: any ) => this.tostador.error( err.error, '¡Error!' )
-      ).add( () => { this.createForm(); this.fetchRoles(); } );
+      ).add( () => {  this.fetchRoles(); } );
     }
 
   }
@@ -66,16 +65,17 @@ export class EditComponent implements OnInit {
     .subscribe(
       ( res: any ) => this.dptos = res.data,
       ( err: any ) => this.tostador.error( err.error, '¡Error!' )
-    ).add( () => { this.fetchBosses(); } );
+    ).add( () => { this.createForm(); this.fetchBosses(); } );
   }
 
   fetchBosses() {
+    console.log( 'ENTRANDO' );
     if ( this.form.controls.role.value && this.form.controls.area.value ) {
       const role = Number( this.form.controls.role.value.slice( -1 ) );
       if ( !isNaN( role ) ) {
         this.cUserService.getBosses( role, this.form.controls.area.value )
         .subscribe(
-          ( res: any ) => this.bosses = res.data,
+          ( res: any ) => { this.bosses = res.data; },
           ( err: any ) => this.tostador.error( err.error, '¡Error!' )
         ).add( () => {  } );
       }
@@ -94,21 +94,11 @@ export class EditComponent implements OnInit {
       role:     new FormControl( hierarchy,  [ Validators.required]),
       area:     new FormControl( this.user.area._id,  [ Validators.required]),
       status:   new FormControl( this.user.status ),
-      boss:     new FormControl( this.user.boss ),
+      boss:     new FormControl( this.user.boss._id ),
       file:     new FormControl(),
-      password: new FormControl(),
     });
 
-    let allowed     = Number( this.cLs.getIndex('hierarchy') ) < 3;
-    allowed         = !allowed;
-    const myProfile = this.user._id === this.cLs.getIndex('id');
-
-    this.permission.allowed   = allowed;
-    this.permission.myProfile = myProfile;
-
-    console.log( this.permission );
-
-    if ( !allowed ) {
+    if ( Number( this.cLs.getIndex('hierarchy') ) < 3 ) {
       this.form.controls.email.disable({ onlySelf: true });
       this.form.controls.username.disable({ onlySelf: true });
       this.form.controls.role.disable({ onlySelf: true });
@@ -146,10 +136,12 @@ export class EditComponent implements OnInit {
 
   roleLabel( selector: any ) {
     this.rolLabel = selector.options[ selector.selectedIndex ].text;
+    this.fetchBosses();
   }
 
   dptoLabel( selector: any ) {
     this.dpLabel = selector.options[ selector.selectedIndex ].text;
+    this.fetchBosses();
   }
 
   renderImage( file: any ) {

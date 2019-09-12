@@ -39,16 +39,16 @@ export class EmployeesComponent implements OnInit {
     if ( !isNaN( page ) ) {
       this.pages = 0;
       this.cells = [];
-      this.cUserService.fetch( page, 20, find )
+      this.cUserService.fetch( page, 8, find )
       .subscribe(
         ( res: any ) => {
           this.users = res.data;
           this.count = res.count;
-          this.pages = Math.ceil( res.count / 20 );
+          this.pages = Math.ceil( res.count / 8 );
           if ( this.pages > 1 ) {
             for ( let i = 1; i <= this.pages; i++ ) { this.cells.push( i ); }
           }
-          this.showing = this.users.length < 20 ? this.count : (this.users.length * this.current);
+          this.showing = this.users.length < 8 ? this.count : (this.users.length * this.current);
         },
         ( err: any ) => this.tostador.error( err.message, '¡Error!' )
       ).add( () => { this.isLoading = false; } );
