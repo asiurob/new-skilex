@@ -11,15 +11,15 @@
   </div>
 
   <div class="col-sm-2">
-    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-brands']">Nueva Marca</a>
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-brands/1']">Nueva Marca</a>
   </div>
 
   <div class="col-sm-2">
-    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-models']">Nuevo modelo</a>
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-models/1']">Nuevo modelo</a>
   </div>
 
   <div class="col-sm-2 offset-sm-2">
-    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glasses/new']">Nuevo armazón</a>
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glasses/new/' + curr]">Nuevo armazón</a>
   </div>
 </div>
 
@@ -37,20 +37,32 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="glasses.length === 0">
-          <td colspan="6">No hay armazones, crea uno nuevo</td>
-        </tr>
-        <ng-template *ngIf="glasses.length > 0">
-          <tr *ngFor="let glass of glasses">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </ng-template>
 
+        <tr *ngFor="let glass of glasses">
+          <td>{{ glass.brand.name }}</td>
+          <td>{{ glass.model.name }}</td>
+          <td>{{ glass.price | currency }}</td>
+          <td>{{ glass.left }} / {{ glass.quantity }}</td>
+          <td>{{ glass.primaryColor }}
+            <span *ngIf="glass.secondaryColor">
+              - {{ glass.secondaryColor }}
+            </span>
+          </td>
+          <td>
+            <a class="btn btn-sm btn-outline-light mx-1"
+              [routerLink]="['/glasses/edit/' + glass.normalizedToLink + '/' + curr ]">
+              <i class="fas fa-edit"></i>
+            </a>
+            <button *ngIf="glass.status === 'inactive'" class="btn btn-sm btn-outline-light mx-1"
+              (click)="swapStatus( glass )">
+              <i class="fas fa-ban text-danger"></i>
+            </button>
+            <button *ngIf="glass.status === 'active'" class="btn btn-sm btn-outline-light mx-1"
+              (click)="swapStatus( glass )">
+              <i class="fas fa-check text-success"></i>
+            </button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

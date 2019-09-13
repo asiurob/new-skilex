@@ -6,7 +6,7 @@
   </div>
 </div>
 <h5 class="text-center text-light">Nuevo armazón</h5>
-<form [formGroup]="form" (submit)="save()">
+<form [formGroup]="form" (submit)="save()" *ngIf="glass">
   <div class="row">
     <div class="col-sm-4">
       <div class="form-group">
@@ -16,7 +16,7 @@
           <option *ngFor="let brand of brands" [value]="brand._id">{{ brand.name }}</option>
         </select>
         <a class="fs06 text-light text-decoration-none" [routerLink]="[ '/glass-brands/1']">
-            ¿No encuentras la marca?
+          ¿No encuentras la marca?
         </a><br>
         <span *ngIf="form.controls['brand'].value === 0 && sent" class="text-danger fs07">
           La marca es necesaria
@@ -32,7 +32,7 @@
           <option *ngFor="let model of models" [value]="model._id">{{ model.name }}</option>
         </select>
         <a class="fs06 text-light text-decoration-none" [routerLink]="[ '/glass-models/1']">
-            ¿No encuentras el modelo?
+          ¿No encuentras el modelo?
         </a><br>
         <div *ngIf="form.controls['model'].value === 0 && sent">
           <span class="text-danger fs07">Olvidaste el modelo</span>

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-2">
-    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/glass-models']">
+    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/glass-models/' + curr]">
       <i class="fas fa-chevron-left"></i> Regresar
     </a>
   </div>
@@ -14,7 +14,7 @@
       <option *ngFor="let brand of brands" [selected]=" brand._id == model.brand._id ? 'selected' : '' "
        [value]="brand._id">{{ brand.name }}</option>
     </select>
-    <a class="fs07 text-light text-decoration-none" [routerLink]="[ '/glass-brands']">¿No encuentras la marca? Busca o crea una aquí</a>
+    <a class="fs07 text-light text-decoration-none" [routerLink]="[ '/glass-brands/1']">¿No encuentras la marca? Busca o crea una aquí</a>
     <button class="btn btn-outline-light btn-block btn-sm mt-3" (click)="save( f.value )">Guardar</button>
   </div>
 </div>

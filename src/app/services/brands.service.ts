@@ -18,12 +18,16 @@ export class BrandsService {
     return this.cHttp.post( `${ link }/glass-brands/`, {name, user: this.cUser.getIndex('id'), token: this.cUser.getToken()} );
   }
 
-  public fetch( value?: string ): Observable<any> {
+  public fetch( skip: number, limit: number, filter?: number, value?: string ): Observable<any> {
     value = value ? value : '';
-    return this.cHttp.get( `${ link }/glass-brands/${ value }` );
+    return this.cHttp.get( `${ link }/glass-brands/${skip}/${limit}/${filter}/${ value }` );
   }
 
   public edit( id: string, name: string ): Observable<any> {
     return this.cHttp.put( `${ link }/glass-brands/${ id }`, { name, user: this.cUser.getIndex('id')  } );
+  }
+
+  public swapStatus( id: string, status: string ): Observable<any> {
+    return this.cHttp.delete( `${ link }/glass-brands/${id}/${status}` );
   }
 }

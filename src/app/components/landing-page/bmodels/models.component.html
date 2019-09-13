@@ -1,15 +1,19 @@
 <div class="row">
   <div class="col-3">
-    <a class="btn btn-block btn-outline-light btn-sm" [routerLink]="['/glasses']">
+    <a class="btn btn-block btn-outline-light btn-sm" [routerLink]="['/glasses/1']">
       <i class="fas fa-chevron-left"></i> Regresar a armazones
     </a>
+  </div>
+  <div class="col-9">
+    <h2 class="text-light text-right">Modelos de armazón</h2>
   </div>
 </div>
 
 <div class="row my-3">
   <div class="col-sm-4">
     <div class="input-group mb-3">
-      <input type="text" class="form-control bg-dark text-light border-dark form-control-sm" placeholder="Buscar modelo">
+        <input type="text" #i class="form-control bg-dark text-light border-dark form-control-sm"
+        placeholder="Buscar modelo" (keyup)="findModel( i.value )" (keydown)="clearTime()">
       <div class="input-group-append">
         <span class="input-group-text bg-dark text-light border-dark input-group-sm"> <i class="fas fa-search"></i>
         </span>
@@ -18,7 +22,7 @@
   </div>
 
   <div class="col-sm-2 offset-sm-6">
-    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-models/new']">Nuevo modelo</a>
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-models/new/' + curr]">Nuevo modelo</a>
   </div>
 </div>
 
@@ -27,7 +31,7 @@
     <table class="table table-sm table-hover table-dark table-striped text-center fs08">
       <thead class="fs10">
         <tr>
-          <th>Nombre</th>
+          <th>Modelo</th>
           <th>Marca</th>
           <th>Creado</th>
           <th>Acciones</th>
@@ -43,11 +47,16 @@
           </td>
           <td>
             <a class="btn btn-sm btn-outline-light mx-1"
-              [routerLink]="['/glass-models/edit/' + model.normalizedToLink ]">
+              [routerLink]="['/glass-models/edit/' + model.normalizedToLink + '/' + curr ]">
               <i class="fas fa-edit"></i>
             </a>
-            <button class="btn btn-sm btn-outline-light mx-1" (click)="delete( model )">
-              <i class="fas fa-trash"></i>
+            <button *ngIf="model.status === 'inactive'" class="btn btn-sm btn-outline-light mx-1"
+              (click)="swapStatus( model )">
+              <i class="fas fa-ban text-danger"></i>
+            </button>
+            <button *ngIf="model.status === 'active'" class="btn btn-sm btn-outline-light mx-1"
+              (click)="swapStatus( model )">
+              <i class="fas fa-check text-success"></i>
             </button>
           </td>
         </tr>
@@ -55,5 +64,21 @@
 
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row mt-5" *ngIf="pages > 1">
+  <div class="col-12">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" *ngFor="let cell of cells">
+        <a class="page-link" [ngClass]="{'active-pagination': cell === curr }"
+          style="background-color: #343a40; color: #f8f9fa;" [routerLink]="['/glass-models', cell ]">{{cell}}</a>
+      </li>
+    </ul>
+    <p class="text-center text-light">
+      Mostrando
+      <span class="font-weight-bold">{{ showing }}</span> de
+      <span class="font-weight-bold">{{count}}</span> resultados
+    </p>
   </div>
 </div>

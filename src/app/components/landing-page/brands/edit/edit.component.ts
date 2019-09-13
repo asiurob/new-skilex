@@ -10,6 +10,7 @@ import { BrandsService } from '../../../../services/brands.service';
 })
 export class EditComponent implements OnInit {
   public brand: any;
+  public curr: number;
   constructor(
     private brandsService: BrandsService,
     private route: ActivatedRoute,
@@ -19,8 +20,9 @@ export class EditComponent implements OnInit {
 
   ngOnInit() {
     const value = this.route.snapshot.params.name;
+    this.curr   = Number(this.route.snapshot.params.page) || 1;
     if ( value ) {
-      this.brandsService.fetch( value )
+      this.brandsService.fetch( 0, 1, 0, value )
       .subscribe(
         ( res: any ) => this.brand = res.data[0],
         ( err: any ) => this.tostador.error( err.error, '¡Error!' )
@@ -33,7 +35,7 @@ export class EditComponent implements OnInit {
     if ( value ) {
       this.brandsService.edit( this.brand._id, value )
       .subscribe(
-        () => this.router.navigateByUrl('/glass-brands'),
+        () => this.router.navigateByUrl('/glass-brands/' + this.curr),
         ( err: any ) => this.tostador.error( err.error, '¡Error!' )
       ).add( () => {  } );
     }

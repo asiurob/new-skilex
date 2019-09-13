@@ -7,15 +7,16 @@ import { ModelsService } from '../../../../services/models.service';
 import { GlassesService } from '../../../../services/glasses.service';
 
 @Component({
-  selector: 'app-new',
-  templateUrl: './new.component.html',
-  styleUrls: ['./new.component.sass']
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.sass']
 })
-export class NewComponent implements OnInit {
+export class EditComponent implements OnInit {
 
   public sent = false;
   public curr: number;
   public form: FormGroup;
+  public glass: any;
   public brands: Array<any> = [];
   public models: Array<any> = [];
   public colors: Array<any> = [
@@ -38,20 +39,16 @@ export class NewComponent implements OnInit {
   ngOnInit() {
     this.colors = this.colors.sort();
     this.curr = Number( this.route.snapshot.params.page ) || 1;
-    this.form = new FormGroup({
-      brand: new FormControl( 0, [ Validators.required ] ),
-      model: new FormControl( 0, [ Validators.required ] ),
-      price: new FormControl( '', [ Validators.required, Validators.pattern('[0-9]+') ] ),
-      primaryColor: new FormControl( 0, [ Validators.required] ),
-      secondaryColor: new FormControl( 0 ),
-      quantity: new FormControl( 1, [ Validators.required, Validators.pattern('[0-9]+') ] ),
-    });
+    const name = this.route.snapshot.params.name;
 
-    this.brandService.fetch(0, 1000, 1)
-    .subscribe(
-      ( res: any ) => this.brands = res.data,
-      ( err: any ) => this.tostador.error( err.message, '¡Error!')
-    ).add( () => {});
+    if ( name ) {
+      this.glassesService.fetch( 0, 1, name )
+      .subscribe(
+        ( res: any ) => this.glass = res.data[0],
+        ( err: any ) => this.tostador.error( err.message, '¡Error!')
+      ).add( () => {} );
+    }
+
   }
 
   save() {
@@ -76,14 +73,4 @@ export class NewComponent implements OnInit {
       }
   }
 
-  findModels() {
-    const brand = this.form.controls.brand.value;
-    if ( brand ) {
-      this.modelService.findByBrand( brand )
-      .subscribe(
-        ( res: any ) => this.models = res.data,
-        ( err: any ) => this.tostador.error( err.message, '¡Error!')
-      ).add( () => {});
-    }
-  }
 }

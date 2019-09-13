@@ -7,15 +7,18 @@ import { LocalStorageService } from './local-storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ModelsService {
-  public route = 'glass-models';
+export class GlassesService {
+
+  public route = 'glasses';
+
   constructor(
     private cHttp: HttpClient,
     private cUser: LocalStorageService
   ) { }
 
-  public save( name: string, brand: string ): Observable<any> {
-    return this.cHttp.post( `${ link }/${ this.route }/`, {name, brand, user: this.cUser.getIndex('id'), token: this.cUser.getToken()} );
+  public save( data: any ): Observable<any> {
+    data.token = this.cUser.getIndex('token');
+    return this.cHttp.post( `${ link }/${ this.route }`, data );
   }
 
   public fetch( skip: number, limit: number, value?: string ): Observable<any> {
@@ -23,15 +26,7 @@ export class ModelsService {
     return this.cHttp.get( `${ link }/${ this.route }/${skip}/${limit}/${ value }` );
   }
 
-  public edit( id: string, name: string, brand: string ): Observable<any> {
-    return this.cHttp.put( `${ link }/${ this.route }/${ id }`, { name, brand, user: this.cUser.getIndex('id')  } );
-  }
-
   public swapStatus( id: string, status: string ): Observable<any> {
     return this.cHttp.delete( `${ link }/${ this.route }/${id}/${status}` );
-  }
-
-  public findByBrand( id: string ): Observable<any> {
-    return this.cHttp.get( `${ link }/glass-brand-model/${id}` );
   }
 }
