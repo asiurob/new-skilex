@@ -1,0 +1,20 @@
+<div class="row my-3">
+  <div class="col-sm-4">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control bg-dark text-light border-dark form-control-sm"
+        placeholder="Busca campaña">
+      <div class="input-group-append">
+        <span class="input-group-text bg-dark text-light border-dark input-group-sm"> <i class="fas fa-search"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-2">
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/companies/1']">Nueva empresa</a>
+  </div>
+
+  <div class="col-sm-2 offset-sm-4">
+    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/campaigns/new/' + curr]">Nueva campaña</a>
+  </div>
+</div>

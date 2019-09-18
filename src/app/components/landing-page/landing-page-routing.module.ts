@@ -14,6 +14,8 @@ const routes: Routes = [
       { path: 'glasses', loadChildren: './glasses/glasses.module#GlassesModule' },
       { path: 'glass-brands', loadChildren: './brands/brands.module#BrandsModule' },
       { path: 'glass-models', loadChildren: './bmodels/models.module#ModelsModule' },
+      { path: 'campaigns', loadChildren: './campaigns/campaigns.module#CampaignsModule' },
+      { path: 'companies', loadChildren: './companies/companies.module#CompaniesModule' },
 
     ]
    },

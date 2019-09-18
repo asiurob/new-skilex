@@ -1,0 +1,179 @@
+<div class="row">
+  <div class="col-2">
+    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/companies/' + curr]">
+      <i class="fas fa-chevron-left"></i> Regresar
+    </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <h5 class="text-center text-light" *ngIf="company">Editando {{ company.name }}</h5>
+  </div>
+</div>
+
+<form [formGroup]="form" (submit)="save()" *ngIf="company">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="text-center text-light border-card rounded p-2"
+        [ngClass]="{'isActive': form.controls['status'].value == 'active', 'isInactive': form.controls['status'].value == 'inactive'}">
+        <img [src]="pic" [alt]="form.controls['name'].value" class="img-fluid rounded mb-2 portrait">
+        <h6>{{ form.controls['name'].value }}
+          <br><small class="text-muted">Gestor {{ me.name }} {{ me.last_name }}</small>
+        </h6>
+        <a class="text-decoration-none text-light fs08"><i
+            class="fas fa-user"></i>{{ form.controls['contact'].value }}</a><br>
+        <a class="text-decoration-none text-light fs08"><i
+            class="fas fa-envelope"></i>{{ form.controls['email'].value }}</a><br>
+        <a class="text-decoration-none text-light fs08"><i
+            class="fas fa-mobile-alt"></i>{{ form.controls['phone'].value }}</a>
+      </div>
+    </div>
+    <div class="col-sm-9">
+      <div class="row text-light fs08 my-3">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" class="form-control form-control-sm bg-dark text-light"
+              placeholder="Nombre de la empresa" formControlName="name">
+            <span class="fs06 text-danger" *ngIf="touched && form.controls['name'].errors?.required">
+              ¿Cómo se llama la empresa?
+            </span>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label>Contacto</label>
+            <input type="text" class="form-control form-control-sm bg-dark text-light"
+              placeholder="Nombre del contacto directo" formControlName="contact">
+            <span class="fs06 text-danger" *ngIf="touched && form.controls['contact'].errors?.required">
+              Agrega al representante de esta empresa
+            </span>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label>Tipo de empresa</label>
+            <select class="form-control form-control-sm bg-dark text-light" formControlName="type">
+              <option selected disabled value="0">Selecciona un tipo</option>
+              <option value="publica">Pública</option>
+              <option value="privada">Privada</option>
+            </select>
+            <span class="fs06 text-danger" *ngIf="touched && form.controls['type'].value == 0">
+              Elige un tipo de empresa
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row text-light fs08 my-3">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="text" class="form-control form-control-sm bg-dark text-light"
+              placeholder="Teléfono del contacto" formControlName="phone">
+            <span class="fs06 text-danger" *ngIf="touched && form.controls['phone'].errors?.required">
+              No lo dejes sin teléfono
+            </span>
+            <span class="fs06 text-danger" *ngIf="touched && form.controls['phone'].errors?.pattern">
+              El número de teléfono debe ser 10 digitos y sólo números
+            </span>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label>Correo electrónico</label>
+            <input type="text" class="form-control form-control-sm bg-dark text-light"
+              placeholder="Correo electrónico del contacto directo" formControlName="email">
+            <span class="fs06 text-danger" *ngIf="touched && form.controls['email'].errors?.required">
+              Agrega el correo del contacto
+            </span>
+            <span class="fs06 text-danger" *ngIf="touched && form.controls['email'].errors?.email">
+              Esto no parece un correo válido
+            </span>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label>Domicilio</label>
+            <input type="text" class="form-control form-control-sm bg-dark text-light"
+              placeholder="Domicilio de la empresa" formControlName="address">
+            <span class="fs06 text-danger" *ngIf="touched && form.controls['address'].errors?.required">
+              Y... ¿A donde vamos a ir?
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row text-light fs08 my-3">
+        <div class="col-sm-6">
+          <label>Estado</label>
+          <select class="form-control form-control-sm bg-dark text-light" formControlName="status">
+            <option value="active">Activa</option>
+            <option value="inactive">Inactiva</option>
+          </select>
+        </div>
+        <div class="col-sm-6">
+          <label>Foto</label>
+          <input type="file" class="form-control form-control-sm bg-dark text-light" #f
+            (change)="loadPhoto( f.files[0] )">
+          <span class="fs06 text-danger" *ngIf="imgErr">
+            {{ imgErr }}
+          </span>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-12">
+          <div id="accordion">
+            <div class="card bg-dark">
+              <div class="card-header">
+                <a class="card-link text-center text-light" data-toggle="collapse" href="#collapseOne">
+                  Ver el historial de cambios
+                </a>
+              </div>
+              <div id="collapseOne" class="collapse" data-parent="#accordion">
+                <div class="card-body">
+                  <ul *ngIf="company.modification.length > 0" class="list-group">
+                    <li class="list-group-item fs07 bg-dark text-light"
+                      *ngFor="let mod of pagComments[ indexComments ]">
+                      El
+                      <span class="text-primary">{{ mod.date | date:'medium' }} - {{ mod.user.name }}
+                        {{ mod.user.last_name }}</span>
+                      modificó:
+                      <ul *ngFor="let up of mod.updated" class="list-unstyled">
+                        <li class="ml-2">
+                          {{ up.field }} de <span class="font-weight-bolder fs08">{{ up.from }}</span> por <span
+                            class="font-weight-bolder fs08">{{ up.to }}</span>.
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <div *ngIf="company.modification.length > 0">
+                    <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" (click)="lessComments()">
+                      <i class="fas fa-chevron-left"></i>
+                    </a>
+                    <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" (click)="plusComments()">
+                      <i class="fas fa-chevron-right"></i>
+                    </a>
+                  </div>
+                  <label *ngIf="company.modification.length === 0" class="text-center text-light">Aún no hay
+                    modificaciones</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row text-light fs08 my-3">
+        <div class="col-sm-6 offset-sm-3">
+          <button type="submit" class="btn btn-block btn-outline-light btn-sm my-2">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
