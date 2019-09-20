@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CompaniesService {
+export class CampaignService {
 
-  public route = 'company';
+  public route = 'campaign';
   constructor(
     private cHttp: HttpClient
   ) { }
@@ -27,6 +27,6 @@ export class CompaniesService {
   }
 
   public catalog(): Observable<any> {
-    return this.cHttp.get( `${ link }/company-catalog` );
+    return this.cHttp.get( `${ link }/campaign-catalog` );
   }
 }

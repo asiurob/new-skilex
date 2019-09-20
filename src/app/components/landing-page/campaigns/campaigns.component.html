@@ -1,10 +1,11 @@
 <div class="row my-3">
   <div class="col-sm-4">
     <div class="input-group mb-3">
-      <input type="text" class="form-control bg-dark text-light border-dark form-control-sm"
-        placeholder="Busca campaña">
+      <input #i type="text" class="form-control bg-dark text-light border-dark form-control-sm"
+        placeholder="Puedes buscar _hoy" (keyup)="findCompany( i.value )" (keydown)="clearTime()">
       <div class="input-group-append">
-        <span class="input-group-text bg-dark text-light border-dark input-group-sm"> <i class="fas fa-search"></i>
+        <span class="input-group-text bg-dark text-light border-dark input-group-sm"> 
+          <i class="fas fa-search"></i>
         </span>
       </div>
     </div>
@@ -16,5 +17,28 @@
 
   <div class="col-sm-2 offset-sm-4">
     <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/campaigns/new/' + curr]">Nueva campaña</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-3 my-2" *ngFor="let campaign of campaigns">
+    <div [class]="'text-center text-light border-card rounded p-2 ' + campaign.border">
+      <a *ngIf="campaign.allow" [routerLink]="['/campaigns/edit/' + campaign.normalizedToLink + '/' + curr]">
+        <img [src]="'http://localhost:9000/companies/' + campaign.company.photo" [alt]="campaign.company.name"
+          class="portrait">
+      </a>
+        <img *ngIf="!campaign.allow" [src]="'http://localhost:9000/companies/' + campaign.company.photo" [alt]="campaign.company.name"
+          class="portrait">
+      <h6 class="mt-1">{{ campaign.company.name }}
+        <br><small class="text-muted">{{ campaign.date | date:'medium' }}</small>
+      </h6>
+
+      <hr class="border-secondary">
+      <span class="fs09">Asistentes</span>
+      <div class="d-flex  mt-2 t  ext-center">  
+        <img *ngFor="let employee of campaign.employees" [src]="'http://localhost:9000/users/' + employee.photo" 
+        [alt]="employee.name +  ' ' + employee.last_name" class="miniature rounded-circle ml-1 mx-auto">
+      </div>
+    </div>
   </div>
 </div>

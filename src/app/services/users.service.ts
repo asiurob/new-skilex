@@ -35,4 +35,8 @@ export class UsersService {
   public getBosses( role: number, dpto: string ): Observable<any> {
     return this.cHttp.get( `${ link }/boss/${ role }/${ dpto }` );
   }
+
+  public catalog(): Observable<any> {
+    return this.cHttp.get( `${ link }/user-catalog` );
+  }
 }

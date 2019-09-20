@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col-2">
+    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/campaigns/' + curr]">
+      <i class="fas fa-chevron-left"></i> Regresar
+    </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <h5 class="text-center text-light">Nueva campaña</h5>
+  </div>
+</div>
+
+<form [formGroup]="form" (submit)="save()">
+  <div class="row my-2 text-light">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Fecha</label>
+        <input type="date" class="form-control form-control-sm bg-dark text-light" [min]="now()" formControlName="date">
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['date'].errors?.required">
+          ¿Qué día iremos?
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Hora</label>
+        <input type="time" class="form-control form-control-sm bg-dark text-light" formControlName="time">
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['time'].errors?.required">
+          ¿A que horá es el evento?
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Asistentes</label>
+        <select class="form-control form-control-sm bg-dark text-light" multiple formControlName="employees">
+          <option *ngFor="let user of users" [value]="user._id">{{ user.name }} {{ user.last_name }}</option>
+        </select>
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['employees'].errors?.required">
+          Esto no se atenderá solo...
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row my-2 text-light">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Empresa</label>
+        <select #c class="form-control form-control-sm bg-dark text-light" (change)="companyName = c.options[ c.selectedIndex ].text"
+        formControlName="company">
+          <option selected disabled value="0">Selecciona una empresa</option>
+          <option *ngFor="let company of companies" [value]="company._id">{{ company.name }}</option>
+        </select>
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['company'].value == 0">
+          Dime dónde será el evento
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Tipo de pago</label>
+        <select class="form-control form-control-sm bg-dark text-light" formControlName="type">
+          <option selected disabled value="0">Selecciona un tipo</option>
+          <option value="nomina">Nómina</option>
+          <option value="credito">Crédito directo</option>
+        </select>
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['type'].value == 0">
+          ¿Cómo se piensa cobrar?
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Empleados aproximados</label>
+        <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="aprox_costumers"
+          placeholder="Empleados aproximados">
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['aprox_costumers'].errors?.pattern">
+          No parece un número
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row my-2 text-light">
+    <div class="col-sm-6 offset-sm-3">
+      <div class="form-group">
+        <label class="fs08">Comentarios adicionales</label>
+        <textarea class="form-control form-control-sm bg-dark text-light" formControlName="comments"
+          placeholder="Agrega comentarios"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row my-2 text-light">
+    <div class="col-sm-6 offset-sm-3">
+      <button type="submit" class="btn btn-block btn-outline-light btn-sm">Guardar</button>
+    </div>
+  </div>
+</form>
