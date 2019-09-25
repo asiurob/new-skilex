@@ -1,3 +1,6 @@
+<div class="clearfix">
+  <h2 class="float-right text-light">Armazones</h2>
+</div>
 <div class="row my-3">
   <div class="col-sm-4">
     <div class="input-group mb-3">
@@ -14,11 +17,7 @@
     <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-brands/1']">Nueva Marca</a>
   </div>
 
-  <div class="col-sm-2">
-    <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glass-models/1']">Nuevo modelo</a>
-  </div>
-
-  <div class="col-sm-2 offset-sm-2">
+  <div class="col-sm-2 offset-sm-4">
     <a class="btn btn-sm btn-outline-light btn-block" [routerLink]="['/glasses/new/' + curr]">Nuevo armazón</a>
   </div>
 </div>
@@ -40,7 +39,7 @@
 
         <tr *ngFor="let glass of glasses">
           <td>{{ glass.brand.name }}</td>
-          <td>{{ glass.model.name }}</td>
+          <td>{{ glass.model }}</td>
           <td>{{ glass.price | currency }}</td>
           <td>{{ glass.left }} / {{ glass.quantity }}</td>
           <td>{{ glass.primaryColor }}

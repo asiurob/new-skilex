@@ -21,6 +21,11 @@ export class GlassesService {
     return this.cHttp.post( `${ link }/${ this.route }`, data );
   }
 
+  public edit( data: any, id: string ): Observable<any> {
+    data.token = this.cUser.getIndex('token');
+    return this.cHttp.put( `${ link }/${ this.route }/${ id }`, data );
+  }
+
   public fetch( skip: number, limit: number, value?: string ): Observable<any> {
     value = value ? value : '';
     return this.cHttp.get( `${ link }/${ this.route }/${skip}/${limit}/${ value }` );

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from 'src/app/services/users.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { link } from '../../../variables/services.config';
 
 @Component({
   selector: 'app-employees',
@@ -43,6 +44,7 @@ export class EmployeesComponent implements OnInit {
       .subscribe(
         ( res: any ) => {
           this.users = res.data;
+          this.users.map( ( u: any ) => u.photo = `${ link }/users/${ u.photo }`);
           this.count = res.count;
           this.pages = Math.ceil( res.count / 8 );
           if ( this.pages > 1 ) {

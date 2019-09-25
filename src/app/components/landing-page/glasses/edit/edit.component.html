@@ -5,13 +5,14 @@
     </a>
   </div>
 </div>
-<h5 class="text-center text-light">Nuevo armazón</h5>
 <form [formGroup]="form" (submit)="save()" *ngIf="glass">
+  <h5 class="text-center text-light">Editando el armazón {{ glass.brand.name }} - {{ glass.model }}</h5>
   <div class="row">
     <div class="col-sm-4">
       <div class="form-group">
         <label class="text-muted">Marca</label>
-        <select class="form-control form-control-sm bg-dark text-light" formControlName="brand" (change)="findModels()">
+        <select #b class="form-control form-control-sm bg-dark text-light" formControlName="brand"
+          (change)="setBrandName( b )">
           <option selected disabled value="0">Selecciona una marca</option>
           <option *ngFor="let brand of brands" [value]="brand._id">{{ brand.name }}</option>
         </select>
@@ -27,14 +28,9 @@
     <div class="col-sm-4">
       <div class="form-group">
         <label class="text-muted">Modelo</label>
-        <select class="form-control form-control-sm bg-dark text-light" formControlName="model">
-          <option selected disabled value="0">Selecciona un modelo</option>
-          <option *ngFor="let model of models" [value]="model._id">{{ model.name }}</option>
-        </select>
-        <a class="fs06 text-light text-decoration-none" [routerLink]="[ '/glass-models/1']">
-          ¿No encuentras el modelo?
-        </a><br>
-        <div *ngIf="form.controls['model'].value === 0 && sent">
+        <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="model"
+          placeholder="Describe el modelo del armazón">
+        <div *ngIf="form.controls['model'].errors?.required && sent">
           <span class="text-danger fs07">Olvidaste el modelo</span>
         </div>
       </div>
@@ -87,6 +83,48 @@
         <span *ngIf="form.controls['quantity'].errors?.required && sent" class="text-danger fs07">
           Es necesaria la cantidad de piezas
         </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-10">
+      <div id="accordion">
+        <div class="card bg-dark">
+          <div class="card-header">
+            <a class="card-link text-center text-light" data-toggle="collapse" href="#collapseOne">
+              Ver el historial de cambios
+            </a>
+          </div>
+          <div id="collapseOne" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+              <ul *ngIf="glass.modification.length > 0" class="list-group">
+                <li class="list-group-item fs07 bg-dark text-light" *ngFor="let mod of pagComments[ indexComments ]">
+                  El
+                  <span class="text-primary">{{ mod.date | date:'medium' }} - {{ mod.user.name }}
+                    {{ mod.user.last_name }}</span>
+                  modificó:
+                  <ul *ngFor="let up of mod.updated" class="list-unstyled">
+                    <li class="ml-2">
+                      {{ up.field }} de <span class="font-weight-bolder fs08">{{ up.from }}</span> por <span
+                        class="font-weight-bolder fs08">{{ up.to }}</span>.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <div *ngIf="glass.modification.length > 0">
+                <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" (click)="lessComments()">
+                  <i class="fas fa-chevron-left"></i>
+                </a>
+                <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" (click)="plusComments()">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+              </div>
+              <label *ngIf="glass.modification.length === 0" class="text-center text-light">Aún no hay
+                modificaciones</label>  
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

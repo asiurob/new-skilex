@@ -53,6 +53,7 @@ export class NewComponent implements OnInit {
       employees:       new FormControl('', [ Validators.required ] ),
       company:         new FormControl( 0, [ Validators.required ] ),
       type:            new FormControl( 0, [ Validators.required ] ),
+      place:           new FormControl( 'Matriz', [ Validators.required ] ),
       aprox_costumers: new FormControl( 0, [ Validators.pattern('^[0-9]+$') ]),
       comments:        new FormControl()
     });

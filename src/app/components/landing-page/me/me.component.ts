@@ -6,6 +6,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { UsersService } from '../../../services/users.service';
 import { Router } from '@angular/router';
 import { Employee } from '../employees/employees.interface';
+import { link } from '../../../variables/services.config';
 
 @Component({
   selector: 'app-me',
@@ -13,7 +14,6 @@ import { Employee } from '../employees/employees.interface';
   styleUrls: ['./me.component.sass']
 })
 export class MeComponent implements OnInit {
-
   public form: FormGroup;
   public imgRender: string;
   public file: any;
@@ -39,6 +39,7 @@ export class MeComponent implements OnInit {
       .subscribe(
         ( res: any ) => {
           this.user = res.data[0];
+          this.user.photo = `${ link }/users/${ this.user.photo }`;
           this.user.modification = this.user.modification.reverse();
           let x = 0;
           for ( let i = 0; i < this.user.modification.length; i += 3 ) {

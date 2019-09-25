@@ -24,21 +24,39 @@
   <div class="col-sm-3 my-2" *ngFor="let campaign of campaigns">
     <div [class]="'text-center text-light border-card rounded p-2 ' + campaign.border">
       <a *ngIf="campaign.allow" [routerLink]="['/campaigns/edit/' + campaign.normalizedToLink + '/' + curr]">
-        <img [src]="'http://localhost:9000/companies/' + campaign.company.photo" [alt]="campaign.company.name"
+        <img [src]="campaign.company.photo" [alt]="campaign.company.name"
           class="portrait">
       </a>
-        <img *ngIf="!campaign.allow" [src]="'http://localhost:9000/companies/' + campaign.company.photo" [alt]="campaign.company.name"
+        <img *ngIf="!campaign.allow" [src]="campaign.company.photo" [alt]="campaign.company.name"
           class="portrait">
       <h6 class="mt-1">{{ campaign.company.name }}
+        <br><small class="text-info">{{ campaign.place }}</small>
         <br><small class="text-muted">{{ campaign.date | date:'medium' }}</small>
       </h6>
 
       <hr class="border-secondary">
       <span class="fs09">Asistentes</span>
       <div class="d-flex  mt-2 t  ext-center">  
-        <img *ngFor="let employee of campaign.employees" [src]="'http://localhost:9000/users/' + employee.photo" 
+        <img *ngFor="let employee of campaign.employees" [src]="employee.photo" 
         [alt]="employee.name +  ' ' + employee.last_name" class="miniature rounded-circle ml-1 mx-auto">
       </div>
     </div>
   </div>
 </div>
+
+<div class="row mt-5" *ngIf="pages > 1">
+  <div class="col-12">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" *ngFor="let cell of cells">
+        <a class="page-link" [ngClass]="{'active-pagination': cell === curr}"
+          style="background-color: #343a40; color: #f8f9fa;" [routerLink]="['/companies', cell ]">{{cell}}</a>
+      </li>
+    </ul>
+    <p class="text-center text-light">
+      Mostrando
+      <span class="font-weight-bold">{{ showing }}</span> de
+      <span class="font-weight-bold">{{count}}</span> resultados
+    </p>
+  </div>
+</div>
+

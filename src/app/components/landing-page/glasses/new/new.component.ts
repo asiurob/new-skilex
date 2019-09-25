@@ -25,6 +25,7 @@ export class NewComponent implements OnInit {
     'Cafe', 'Rosa', 'Plata',
     'Transparente', 'Metalico', 'Dorado'
   ];
+  public brandName: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +41,7 @@ export class NewComponent implements OnInit {
     this.curr = Number( this.route.snapshot.params.page ) || 1;
     this.form = new FormGroup({
       brand: new FormControl( 0, [ Validators.required ] ),
-      model: new FormControl( 0, [ Validators.required ] ),
+      model: new FormControl( '', [ Validators.required ] ),
       price: new FormControl( '', [ Validators.required, Validators.pattern('[0-9]+') ] ),
       primaryColor: new FormControl( 0, [ Validators.required] ),
       secondaryColor: new FormControl( 0 ),
@@ -57,12 +58,19 @@ export class NewComponent implements OnInit {
   save() {
     this.sent = true;
     if ( this.form.status === 'VALID' && !this.checkErrors() ) {
-      this.glassesService.save( this.form.value )
+      const data = this.form.value;
+      data.brand_name = this.brandName;
+
+      this.glassesService.save( data )
       .subscribe(
         () => this.router.navigateByUrl('/glasses/' + this.curr ),
         ( err: any ) => this.tostador.error( err.message, '¡Error!')
       ).add( () => {});
     }
+  }
+
+  setBrandName( selector: any ) {
+    this.brandName = selector.options[ selector.selectedIndex ].text;
   }
 
   checkErrors() {
@@ -74,16 +82,5 @@ export class NewComponent implements OnInit {
       } else {
         return false;
       }
-  }
-
-  findModels() {
-    const brand = this.form.controls.brand.value;
-    if ( brand ) {
-      this.modelService.findByBrand( brand )
-      .subscribe(
-        ( res: any ) => this.models = res.data,
-        ( err: any ) => this.tostador.error( err.message, '¡Error!')
-      ).add( () => {});
-    }
   }
 }

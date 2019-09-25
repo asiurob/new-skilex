@@ -7,6 +7,7 @@ import { ImageHandlerService } from '../../../../services/image-handler.service'
 import { LocalStorageService } from '../../../../services/local-storage.service';
 import { UsersService } from '../../../../services/users.service';
 import {  ActivatedRoute, Router } from '@angular/router';
+import { link } from '../../../../variables/services.config';
 
 @Component({
   selector: 'app-edit',
@@ -50,6 +51,7 @@ export class EditComponent implements OnInit {
       .subscribe(
         ( res: any ) => {
           this.user = res.data[0];
+          this.user.photo = `${ link }/users/${ this.user.photo }`;
           this.user.modification = this.user.modification.reverse();
           let x = 0;
           for ( let i = 0; i < this.user.modification.length; i += 3 ) {
@@ -80,7 +82,6 @@ export class EditComponent implements OnInit {
   }
 
   fetchBosses() {
-    console.log( 'ENTRANDO' );
     if ( this.form.controls.role.value && this.form.controls.area.value ) {
       const role = Number( this.form.controls.role.value.slice( -1 ) );
       if ( !isNaN( role ) ) {

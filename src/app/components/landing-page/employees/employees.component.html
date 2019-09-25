@@ -25,7 +25,7 @@
         <div class="text-center text-light border-card rounded p-2"
         [ngClass]="{'isActive': user.status == 'active', 'isInactive': user.status == 'inactive'}">
           <a [routerLink]="['/employees/edit/' + user.normalizedToLink + '/' + current ]">
-            <img [src]="'http://localhost:9000/users/' + user.photo" alt="Alberto Siurob"
+            <img [src]="user.photo" [alt]="user.name + ' ' + user.last_name"
               class="img-fluid rounded mb-2 portrait"></a>
           <h6>{{ user.name }} {{ user.last_name }} <br><small class="text-muted">{{ user.role?.name }} de
               {{ user.area?.name }}</small></h6>

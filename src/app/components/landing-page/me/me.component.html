@@ -20,7 +20,7 @@
         <h5 class="text-center text-muted">Vista previa de tarjeta</h5>
         <div class="text-center text-light border-card rounded p-2"
           [ngClass]="{'isActive': form.value.status == 'active', 'isInactive': form.value.status == 'inactive'}">
-          <img [src]="imgRender || 'http://localhost:9000/users/' + user.photo"
+          <img [src]="imgRender || user.photo"
             [alt]="form.value.name + ' ' + form.value.lastname" class="img-fluid rounded mb-2 portrait">
           <h6>{{ form.value.name }} {{ form.value.lastname }}<br>
             <small class="text-muted">{{ user.role.name }} de {{ user.area.name }}</small>

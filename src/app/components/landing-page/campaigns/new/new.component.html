@@ -48,13 +48,23 @@
     <div class="col-sm-4">
       <div class="form-group">
         <label class="fs08">Empresa</label>
-        <select #c class="form-control form-control-sm bg-dark text-light" (change)="companyName = c.options[ c.selectedIndex ].text"
-        formControlName="company">
+        <select #c class="form-control form-control-sm bg-dark text-light"
+          (change)="companyName = c.options[ c.selectedIndex ].text" formControlName="company">
           <option selected disabled value="0">Selecciona una empresa</option>
           <option *ngFor="let company of companies" [value]="company._id">{{ company.name }}</option>
         </select>
         <span class="fs06 text-danger" *ngIf="touched && form.controls['company'].value == 0">
           Dime dónde será el evento
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Sede</label>
+        <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="place"
+          placeholder="Escribe la sede de visita">
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['place'].errors?.required">
+          ¿Cuál es el lugar específico?
         </span>
       </div>
     </div>
@@ -71,7 +81,10 @@
         </span>
       </div>
     </div>
-    <div class="col-sm-4">
+  </div>
+
+  <div class="row my-2 text-light">
+    <div class="col-sm-3">
       <div class="form-group">
         <label class="fs08">Empleados aproximados</label>
         <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="aprox_costumers"
@@ -80,12 +93,8 @@
           No parece un número
         </span>
       </div>
-
     </div>
-  </div>
-
-  <div class="row my-2 text-light">
-    <div class="col-sm-6 offset-sm-3">
+    <div class="col-sm-9">
       <div class="form-group">
         <label class="fs08">Comentarios adicionales</label>
         <textarea class="form-control form-control-sm bg-dark text-light" formControlName="comments"

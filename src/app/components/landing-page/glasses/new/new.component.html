@@ -11,7 +11,7 @@
     <div class="col-sm-4">
       <div class="form-group">
         <label class="text-muted">Marca</label>
-        <select class="form-control form-control-sm bg-dark text-light" formControlName="brand" (change)="findModels()">
+        <select #b class="form-control form-control-sm bg-dark text-light" formControlName="brand" (change)="setBrandName( b )"> 
           <option selected disabled value="0">Selecciona una marca</option>
           <option *ngFor="let brand of brands" [value]="brand._id">{{ brand.name }}</option>
         </select>
@@ -27,14 +27,9 @@
     <div class="col-sm-4">
       <div class="form-group">
         <label class="text-muted">Modelo</label>
-        <select class="form-control form-control-sm bg-dark text-light" formControlName="model">
-          <option selected disabled value="0">Selecciona un modelo</option>
-          <option *ngFor="let model of models" [value]="model._id">{{ model.name }}</option>
-        </select>
-        <a class="fs06 text-light text-decoration-none" [routerLink]="[ '/glass-models/1']">
-            ¿No encuentras el modelo?
-        </a><br>
-        <div *ngIf="form.controls['model'].value === 0 && sent">
+        <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="model"
+          placeholder="Describe el modelo del armazón">
+        <div *ngIf="form.controls['model'].errors?.required && sent">
           <span class="text-danger fs07">Olvidaste el modelo</span>
         </div>
       </div>

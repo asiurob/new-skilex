@@ -1,102 +1,155 @@
 <div class="row">
-    <div class="col-2">
-      <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/campaigns/' + curr]">
-        <i class="fas fa-chevron-left"></i> Regresar
-      </a>
+  <div class="col-2">
+    <a class="w-75 btn btn-block btn-outline-light btn-sm" [routerLink]="['/campaigns/' + curr]">
+      <i class="fas fa-chevron-left"></i> Regresar
+    </a>
+  </div>
+</div>
+
+<div *ngIf="campaign">
+<div class="row">
+  <div class="col-12">
+    <h5 class="text-center text-light">Editando la campaña de {{ campaign.company.name }} ( {{ campaign.place }} )</h5>
+  </div>
+</div>
+
+<form [formGroup]="form" (submit)="save()" *ngIf="campaign">
+  <div class="row my-2 text-light">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Fecha</label>
+        <input type="date" class="form-control form-control-sm bg-dark text-light" [min]="now()" formControlName="date">
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['date'].errors?.required">
+          ¿Qué día iremos?
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Hora</label>
+        <input type="time" class="form-control form-control-sm bg-dark text-light" formControlName="time">
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['time'].errors?.required">
+          ¿A que horá es el evento?
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Asistentes</label>
+        <select class="form-control form-control-sm bg-dark text-light" multiple formControlName="employees">
+          <option *ngFor="let user of users" [value]="user._id">{{ user.name }} {{ user.last_name }}</option>
+        </select>
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['employees'].errors?.required">
+          Esto no se atenderá solo...
+        </span>
+      </div>
     </div>
   </div>
-  <div class="row">
+
+  <div class="row my-2 text-light">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Empresa</label>
+        <select #c class="form-control form-control-sm bg-dark text-light"
+          (change)="companyName = c.options[ c.selectedIndex ].text" formControlName="company">
+          <option selected disabled value="0">Selecciona una empresa</option>
+          <option *ngFor="let company of companies" [value]="company._id">{{ company.name }}</option>
+        </select>
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['company'].value == 0">
+          Dime dónde será el evento
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Sede</label>
+        <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="place"
+          placeholder="Escribe la sede de visita">
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['place'].errors?.required">
+          ¿Cuál es el lugar específico?
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="fs08">Tipo de pago</label>
+        <select class="form-control form-control-sm bg-dark text-light" formControlName="type">
+          <option selected disabled value="0">Selecciona un tipo</option>
+          <option value="nomina">Nómina</option>
+          <option value="credito">Crédito directo</option>
+        </select>
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['type'].value == 0">
+          ¿Cómo se piensa cobrar?
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row my-2 text-light">
+    <div class="col-sm-3">
+      <div class="form-group">
+        <label class="fs08">Empleados aproximados</label>
+        <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="aprox_costumers"
+          placeholder="Empleados aproximados">
+        <span class="fs06 text-danger" *ngIf="touched && form.controls['aprox_costumers'].errors?.pattern">
+          No parece un número
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-9">
+      <div class="form-group">
+        <label class="fs08">Comentarios adicionales</label>
+        <textarea class="form-control form-control-sm bg-dark text-light" formControlName="comments"
+          placeholder="Agrega comentarios"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
     <div class="col-12">
-      <h5 class="text-center text-light">Nueva campaña</h5>
+      <div id="accordion">
+        <div class="card bg-dark">
+          <div class="card-header">
+            <a class="card-link text-center text-light" data-toggle="collapse" href="#collapseOne">
+              Ver el historial de cambios
+            </a>
+          </div>
+          <div id="collapseOne" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+              <ul *ngIf="campaign.modification.length > 0" class="list-group">
+                <li class="list-group-item fs07 bg-dark text-light" *ngFor="let mod of pagComments[ indexComments ]">
+                  El
+                  <span class="text-primary">{{ mod.date | date:'medium' }} - {{ mod.user.name }}
+                    {{ mod.user.last_name }}</span>
+                  modificó:
+                  <ul *ngFor="let up of mod.updated" class="list-unstyled">
+                    <li class="ml-2">
+                      {{ up.field }} de <span class="font-weight-bolder fs08">{{ up.from }}</span> por <span
+                        class="font-weight-bolder fs08">{{ up.to }}</span>.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <div *ngIf="campaign.modification.length > 0">
+                <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" (click)="lessComments()">
+                  <i class="fas fa-chevron-left"></i>
+                </a>
+                <a class="pointer btn btn-sm btn-outline-light text-light my-2 mx-1" (click)="plusComments()">
+                  <i class="fas fa-chevron-right"></i>
+                </a>
+              </div>
+              <label *ngIf="campaign.modification.length === 0" class="text-center text-light">Aún no hay
+                modificaciones</label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  
-  <form [formGroup]="form" (submit)="save()" *ngIf="campaign">
-    <div class="row my-2 text-light">
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label class="fs08">Fecha</label>
-          <input type="date" class="form-control form-control-sm bg-dark text-light" [min]="now()" formControlName="date">
-          <span class="fs06 text-danger" *ngIf="touched && form.controls['date'].errors?.required">
-            ¿Qué día iremos?
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label class="fs08">Hora</label>
-          <input type="time" class="form-control form-control-sm bg-dark text-light" formControlName="time">
-          <span class="fs06 text-danger" *ngIf="touched && form.controls['time'].errors?.required">
-            ¿A que horá es el evento?
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label class="fs08">Asistentes</label>
-          <select class="form-control form-control-sm bg-dark text-light" multiple formControlName="employees">
-            <option *ngFor="let user of users" [value]="user._id">{{ user.name }} {{ user.last_name }}</option>
-          </select>
-          <span class="fs06 text-danger" *ngIf="touched && form.controls['employees'].errors?.required">
-            Esto no se atenderá solo...
-          </span>
-        </div>
-      </div>
+  <div class="row my-2 text-light">
+    <div class="col-sm-6 offset-sm-3">
+      <button type="submit" class="btn btn-block btn-outline-light btn-sm">Guardar</button>
     </div>
-  
-    <div class="row my-2 text-light">
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label class="fs08">Empresa</label>
-          <select #c class="form-control form-control-sm bg-dark text-light" (change)="companyName = c.options[ c.selectedIndex ].text"
-          formControlName="company">
-            <option selected disabled value="0">Selecciona una empresa</option>
-            <option *ngFor="let company of companies" [value]="company._id">{{ company.name }}</option>
-          </select>
-          <span class="fs06 text-danger" *ngIf="touched && form.controls['company'].value == 0">
-            Dime dónde será el evento
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label class="fs08">Tipo de pago</label>
-          <select class="form-control form-control-sm bg-dark text-light" formControlName="type">
-            <option selected disabled value="0">Selecciona un tipo</option>
-            <option value="nomina">Nómina</option>
-            <option value="credito">Crédito directo</option>
-          </select>
-          <span class="fs06 text-danger" *ngIf="touched && form.controls['type'].value == 0">
-            ¿Cómo se piensa cobrar?
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label class="fs08">Empleados aproximados</label>
-          <input type="text" class="form-control form-control-sm bg-dark text-light" formControlName="aprox_costumers"
-            placeholder="Empleados aproximados">
-          <span class="fs06 text-danger" *ngIf="touched && form.controls['aprox_costumers'].errors?.pattern">
-            No parece un número
-          </span>
-        </div>
-  
-      </div>
-    </div>
-  
-    <div class="row my-2 text-light">
-      <div class="col-sm-6 offset-sm-3">
-        <div class="form-group">
-          <label class="fs08">Comentarios adicionales</label>
-          <textarea class="form-control form-control-sm bg-dark text-light" formControlName="comments"
-            placeholder="Agrega comentarios"></textarea>
-        </div>
-      </div>
-    </div>
-    <div class="row my-2 text-light">
-      <div class="col-sm-6 offset-sm-3">
-        <button type="submit" class="btn btn-block btn-outline-light btn-sm">Guardar</button>
-      </div>
-    </div>
-  </form>
-  
+  </div>
+</form>
+</div>

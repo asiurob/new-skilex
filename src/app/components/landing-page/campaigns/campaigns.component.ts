@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CampaignService } from '../../../services/campaign.service';
 import { ToastrService } from 'ngx-toastr';
+import { link } from '../../../variables/services.config';
 
 @Component({
   selector: 'app-campaigns',
@@ -35,9 +36,10 @@ export class CampaignsComponent implements OnInit {
     this.CAMPAIGN_SERVICE.fetch( this.curr, 8, name )
     .subscribe( ( res: any ) => {
       res.data.forEach( ( d: any ) => {
+        d.company.photo = `${ link }/companies/${ d.company.photo }`;
+        d.employees.map( ( u: any ) => u.photo = `${ link }/users/${ u.photo }`);
         const date = new Date( d.date ).setHours(0, 0, 0, 0 );
         const now = new Date().setHours(0, 0, 0, 0 );
-        console.log( date, now );
         if ( date === now ) {
           d.border = 'isCurrent';
           d.allow  = true;
@@ -78,5 +80,6 @@ export class CampaignsComponent implements OnInit {
   clearTime() {
     clearTimeout( this.timer );
   }
+  
 
 }

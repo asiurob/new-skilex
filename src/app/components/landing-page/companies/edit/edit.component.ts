@@ -67,7 +67,7 @@ export class EditComponent implements OnInit {
       address: new FormControl( this.company.address, [Validators.required] ),
       status: new FormControl( this.company.status, [Validators.required] )
     });
-    this.pic = `http://localhost:9000/companies/${ this.company.photo }`;
+    this.pic = `http://18.221.70.54:9000//companies/${ this.company.photo }`;
   }
 
   loadPhoto( file: any ) {
